@@ -1,3 +1,13 @@
+---
+layout: post
+title:  "(function)memcmp"
+date:   2021-01-01 16:00:00
+author: Kim Taewan
+categories: Jekyll
+tags:	function
+cover:  "/assets/instacode.png"
+---
+
 # memcmp
 ```c
 int memcmp(const void *s1, const void *s2, size_t n)

@@ -1,3 +1,13 @@
+---
+layout: post
+title:  "(function)strdup"
+date:   2021-01-01 16:00:00
+author: Kim Taewan
+categories: Jekyll
+tags:	function
+cover:  "/assets/instacode.png"
+---
+
 # strdup
 ```c
 char *strdup(const char *s)

@@ -1,4 +1,4 @@
-#---
+---
 layout: post
 title:  "(function)memchr"
 date:   2021-01-01 16:00:00
@@ -8,7 +8,7 @@ tags:	function
 cover:  "/assets/instacode.png"
 ---
 
- memchr
+# memchr
 ```c
 void *memchr(const void *s, int c, size_t n)
 ```

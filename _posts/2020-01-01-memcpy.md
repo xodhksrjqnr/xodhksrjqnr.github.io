@@ -1,3 +1,13 @@
+---
+layout: post
+title:  "(function)memcpy"
+date:   2021-01-01 16:00:00
+author: Kim Taewan
+categories: Jekyll
+tags:	function
+cover:  "/assets/instacode.png"
+---
+
 # memcpy
 ```c
 void *memcpy(void *dest, const void *src, size_t n)

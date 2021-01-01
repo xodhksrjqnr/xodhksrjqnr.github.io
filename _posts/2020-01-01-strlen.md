@@ -1,3 +1,13 @@
+---
+layout: post
+title:  "(function)strlen"
+date:   2021-01-01 16:00:00
+author: Kim Taewan
+categories: Jekyll
+tags:	function
+cover:  "/assets/instacode.png"
+---
+
 # strlen
 ```c
 size_t *strlen(const char *s)

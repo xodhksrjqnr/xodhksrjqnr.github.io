@@ -1,3 +1,13 @@
+---
+layout: post
+title:  "(function)strlcat"
+date:   2021-01-01 16:00:00
+author: Kim Taewan
+categories: Jekyll
+tags:	function
+cover:  "/assets/instacode.png"
+---
+
 # strlcat
 ```c
 size_t strlcat(char *dest, const char *src, size_t size)

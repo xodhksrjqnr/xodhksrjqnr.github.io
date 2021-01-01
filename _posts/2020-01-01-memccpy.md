@@ -1,4 +1,4 @@
-#---
+---
 layout: post
 title:  "(function)memccpy"
 date:   2021-01-01 16:00:00
@@ -8,7 +8,7 @@ tags:	function
 cover:  "/assets/instacode.png"
 ---
 
- memccpy
+# memccpy
 ```c
 void *memccpy(void *s, const void *src, int c, size_t n)
 ```

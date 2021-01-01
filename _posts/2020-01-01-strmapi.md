@@ -1,3 +1,13 @@
+---
+layout: post
+title:  "(function)strmapi"
+date:   2021-01-01 16:00:00
+author: Kim Taewan
+categories: Jekyll
+tags:	function
+cover:  "/assets/instacode.png"
+---
+
 # strmapi
 ```c
 char *strmapi(char const *s, char (*f)(unsigned int, char))
