@@ -46,6 +46,9 @@ jekyll-archives:
     category: '/category/:name/'
     tag: '/tag/:name/'
 
+#category
+category_list: [function, study]
+
 # Disqus comments
 # disqus_shortname: bencentra
 
