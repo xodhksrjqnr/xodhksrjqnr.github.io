@@ -1,3 +1,13 @@
+---
+layout: post
+title:  "(function)strchr"
+date:   2021-01-01 16:00:00
+author: Kim Taewan
+categories: Jekyll
+tags:	function
+cover:  "/assets/instacode.png"
+---
+
 # strchr
 ```c
 char *strchr(const char *s, int c)
