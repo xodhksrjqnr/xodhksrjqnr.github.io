@@ -8,7 +8,6 @@ main_nav: true
 {% for category in site.categories %}
   {% capture cat %}{{ category | first }}{% endcapture %}
   <h2 id="{{cat}}">{{ cat | capitalize }}</h2>
-  {% endfor %}
   <ul class="posts-list">
   {% for post in site.categories[cat] %}
     <li>
