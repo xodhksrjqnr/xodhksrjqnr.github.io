@@ -8,7 +8,7 @@ tags:	function
 cover:  "/assets/instacode.png"
 ---
 
-#calloc
+# calloc
 ```c
 void  *calloc(size_t nmemb, size_t size)
 ```
