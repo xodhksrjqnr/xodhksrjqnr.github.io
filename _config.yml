@@ -9,12 +9,12 @@ exclude:
   - "/vendor/"
 
 # Site settings
-title: taewakim_develop
-subtitle: code
-email: xodhksrjqnr@naver.com
-name: Kim taewan
+title: "taewakim_develop"
+subtitle: "code"
+email: "xodhksrjqnr@naver.com"
+name: "Kim taewan"
 description: >
-  develop blog
+  "develop blog"
 # Base URL of site (i.e. /blog). It should always start with a slash,
 # and never end with a slash. Set it to a blank value if hosting at the
 # root of your server.
