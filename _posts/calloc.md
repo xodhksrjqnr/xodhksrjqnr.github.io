@@ -1,4 +1,4 @@
-#---
+---
 layout: post
 title:  "(function)calloc"
 date:   2021-01-01 16:00:00
@@ -8,7 +8,7 @@ tags:	function
 cover:  "/assets/instacode.png"
 ---
 
-calloc
+#calloc
 ```c
 void  *calloc(size_t nmemb, size_t size)
 ```
