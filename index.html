@@ -21,7 +21,7 @@ pagination:
     <h2>
       <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
     </h2>
-    <section class="post-excerpt" itemprop="description">
+    <section class="post-excerpt">
       <p>{{ post.content | strip_html | truncatewords: 50 }}</p>
     </section>
     <section class="post-meta">
