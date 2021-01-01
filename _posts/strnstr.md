@@ -1,3 +1,13 @@
+---
+layout: post
+title:  "(function)strnstr"
+date:   2021-01-01 16:00:00
+author: Kim Taewan
+categories: Jekyll
+tags:	function
+cover:  "/assets/instacode.png"
+---
+
 # strnstr
 ```c
 char	*ft_strnstr(const char *s1, const char *s2, size_t len)
