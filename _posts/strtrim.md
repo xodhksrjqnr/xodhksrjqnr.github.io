@@ -1,3 +1,13 @@
+---
+layout: post
+title:  "(function)strtrim"
+date:   2021-01-01 16:00:00
+author: Kim Taewan
+categories: Jekyll
+tags:	function
+cover:  "/assets/instacode.png"
+---
+
 # strtrim
 ```c
 char *strtrim(char const *s1, char const *set)
