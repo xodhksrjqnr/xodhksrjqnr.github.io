@@ -17,7 +17,7 @@ categories: Dummy
 #### 동작방식
 먼저 동작방식에 대해 설명하기 전 i-node란 용어에 대해 정리가 필요하다.<br/>
 
-###### i-node
+##### i-node
 아이노드란 정규 파일, 디렉터리 등 파일 시스템에 관한 정보를 가진 유닉스 계통 파일 시스템에서 사용하는 자료구조이다. 파일마다 1개의 아이노드를 가지고 있어 파일 시스템 내의 파일들은 고유한 아이노드 숫자를 통해 식별이 가능하다. 아래 사진은 아이노드에 포함된 정보이다.<br/>
 <p align="center">
   <img src="https://user-images.githubusercontent.com/48250370/103450039-dfc62200-4cf3-11eb-851a-3bf87bd6a54d.png" width="400">
@@ -27,11 +27,51 @@ categories: Dummy
 <p align="center">
   <img src="https://user-images.githubusercontent.com/48250370/103449891-ec497b00-4cf1-11eb-81a0-34f04902c751.png" width="600">
 </p>
-fd table은 할당받은 fd가 저장되는 공간, open file table은 현재 열려있는 파일들의 공간, active inode table은 열린 파일들의 고유한 inode가 저장되있는 공간을 의미한다. open 함수를 이용한 시스템 호출을 통해 위와 같은 구조로 fd를 할당받게 된다.
+fd table은 할당받은 fd가 저장되는 공간, open file table은 현재 열려있는 파일들의 공간, active inode table은 열린 파일들의 고유한 inode가 저장되있는 공간을 의미한다. open 함수를 이용한 시스템 호출을 통해 위와 같은 구조로 fd를 할당받게 된다.<br/>
+
+#### 파일 관련 시스템 호출
+fd를 사용하는 함수들은 다음과 같다.<br/>
+- open() : 열기
+- creat() : 파일 생성
+- close() : 닫기
+- read() : 읽기
+- write() : 쓰기
+- lseek() : 이동
+
+##### open()
+open 함수는 파일을 열어 fd를 할당받는 역할을 수행한다.<br/>
+* 헤더
+
+```
+fcntl.h
+```
+* 형태
+
+```c
+int open(const char *name, int flags, [mode_t mode]);
+```
+open 함수는 열어줄 파일의 이름(name)과 어떤 형태로 열것인지(flags)를 정할 수 있다. flags 중 파일을 열 때 선택할 모드는 반드시 하나 지정해주어야 한다.<br/>
+```
+- O_RDONLY : 읽기 모드
+- O_WRONLY : 쓰기 모드
+- O_RDWR   : 읽고 쓰기모드
+```
+open 함수를 사용함에 있어 위 모드 중 하나는 반드시 필요로 한다. 아래 파라미터는 선택적인 지정이 가능한 요소들이다.<br/>
+```
+- O_APPEND : 파일의 맨 끝에 내용 추가
+- O_CREAT  : 파일이 없는 경우 생성
+- O_EXCL   : O_EXCL 옵션과 함께 사용, 기존에 없는 파일이면 생성, 이미 있으면 오류 메시지 출력
+```
+* 반환값
+
+```
+성공시 : 할당된 fd<br/>
+실패시 : -1
+```
 
 #### 참고자료
 https://ko.wikipedia.org/wiki/%ED%8C%8C%EC%9D%BC_%EC%84%9C%EC%88%A0%EC%9E%90<br/>
 https://twofootdog.tistory.com/51<br/>
 http://cs.sookmyung.ac.kr/~chang/lecture/sp/chap2.pdf<br/>
 https://ko.wikipedia.org/wiki/%EC%95%84%EC%9D%B4%EB%85%B8%EB%93%9C<br/>
-
+https://m.blog.naver.com/PostView.nhn?blogId=bestheroz&logNo=113881732&proxyReferer=https:%2F%2Fwww.google.com%2F<br/>
