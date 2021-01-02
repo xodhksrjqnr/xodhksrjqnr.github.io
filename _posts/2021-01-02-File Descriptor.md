@@ -19,7 +19,7 @@ categories: Dummy
 
 #### i-node
 아이노드란 정규 파일, 디렉터리 등 파일 시스템에 관한 정보를 가진 유닉스 계통 파일 시스템에서 사용하는 자료구조이다. 파일마다 1개의 아이노드를 가지고 있어 파일 시스템 내의 파일들은 고유한 아이노드 숫자를 통해 식별이 가능하다. 아래 사진은 아이노드에 포함된 정보이다.<br/>
-<p align="center" width="300">
+<p align="center">
   <img src="https://user-images.githubusercontent.com/48250370/103450039-dfc62200-4cf3-11eb-851a-3bf87bd6a54d.png" width="300">
 </p>
 
