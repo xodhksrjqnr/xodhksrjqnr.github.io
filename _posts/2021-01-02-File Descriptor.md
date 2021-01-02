@@ -70,8 +70,8 @@ O_EXCL   : O_EXCL 옵션과 함께 사용, 기존에 없는 파일이면 생성,
 ```
 
 #### 참고자료
-https://ko.wikipedia.org/wiki/%ED%8C%8C%EC%9D%BC_%EC%84%9C%EC%88%A0%EC%9E%90<br/>
-https://twofootdog.tistory.com/51<br/>
-http://cs.sookmyung.ac.kr/~chang/lecture/sp/chap2.pdf<br/>
-https://ko.wikipedia.org/wiki/%EC%95%84%EC%9D%B4%EB%85%B8%EB%93%9C<br/>
-https://m.blog.naver.com/PostView.nhn?blogId=bestheroz&logNo=113881732&proxyReferer=https:%2F%2Fwww.google.com%2F<br/>
+* https://ko.wikipedia.org/wiki/%ED%8C%8C%EC%9D%BC_%EC%84%9C%EC%88%A0%EC%9E%90<br/>
+* https://twofootdog.tistory.com/51<br/>
+* http://cs.sookmyung.ac.kr/~chang/lecture/sp/chap2.pdf<br/>
+* https://ko.wikipedia.org/wiki/%EC%95%84%EC%9D%B4%EB%85%B8%EB%93%9C<br/>
+* https://m.blog.naver.com/PostView.nhn?blogId=bestheroz&logNo=113881732&proxyReferer=https:%2F%2Fwww.google.com%2F<br/>
