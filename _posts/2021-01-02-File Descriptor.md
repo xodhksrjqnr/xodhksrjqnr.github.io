@@ -17,10 +17,10 @@ categories: Dummy
 #### 동작방식
 먼저 동작방식에 대해 설명하기 전 i-node란 용어에 대해 정리가 필요하다.<br/>
 
-##### i-node
+#### i-node
 아이노드란 정규 파일, 디렉터리 등 파일 시스템에 관한 정보를 가진 유닉스 계통 파일 시스템에서 사용하는 자료구조이다. 파일마다 1개의 아이노드를 가지고 있어 파일 시스템 내의 파일들은 고유한 아이노드 숫자를 통해 식별이 가능하다. 아래 사진은 아이노드에 포함된 정보이다.<br/>
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/48250370/103450039-dfc62200-4cf3-11eb-851a-3bf87bd6a54d.png" width="400">
+  <img src="https://user-images.githubusercontent.com/48250370/103450039-dfc62200-4cf3-11eb-851a-3bf87bd6a54d.png" width="600">
 </p>
 
 다시 본론으로 돌아와 fd의 동작 방식이다. 아래 사진과 함께 이해하면 편하다.<br/>
@@ -38,7 +38,7 @@ fd를 사용하는 함수들은 다음과 같다.<br/>
 - write() : 쓰기
 - lseek() : 이동
 
-##### open()
+#### open()
 open 함수는 파일을 열어 fd를 할당받는 역할을 수행한다.<br/>
 * 헤더
 
@@ -52,15 +52,15 @@ int open(const char *name, int flags, [mode_t mode]);
 ```
 open 함수는 열어줄 파일의 이름(name)과 어떤 형태로 열것인지(flags)를 정할 수 있다. flags 중 파일을 열 때 선택할 모드는 반드시 하나 지정해주어야 한다.<br/>
 ```
-- O_RDONLY : 읽기 모드
-- O_WRONLY : 쓰기 모드
-- O_RDWR   : 읽고 쓰기모드
+O_RDONLY : 읽기 모드
+O_WRONLY : 쓰기 모드
+O_RDWR   : 읽고 쓰기모드
 ```
 open 함수를 사용함에 있어 위 모드 중 하나는 반드시 필요로 한다. 아래 파라미터는 선택적인 지정이 가능한 요소들이다.<br/>
 ```
-- O_APPEND : 파일의 맨 끝에 내용 추가
-- O_CREAT  : 파일이 없는 경우 생성
-- O_EXCL   : O_EXCL 옵션과 함께 사용, 기존에 없는 파일이면 생성, 이미 있으면 오류 메시지 출력
+O_APPEND : 파일의 맨 끝에 내용 추가
+O_CREAT  : 파일이 없는 경우 생성
+O_EXCL   : O_EXCL 옵션과 함께 사용, 기존에 없는 파일이면 생성, 이미 있으면 오류 메시지 출력
 ```
 * 반환값
 
