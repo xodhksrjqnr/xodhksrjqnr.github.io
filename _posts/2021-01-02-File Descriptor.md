@@ -69,6 +69,117 @@ O_EXCL   : O_EXCL 옵션과 함께 사용, 기존에 없는 파일이면 생성,
 실패시 : -1
 ```
 
+#### creat()
+creat 함수는 새로운 파일을 생성한다.<br/>
+* 헤더
+
+```
+fcntl.h
+```
+* 형태
+
+```c
+int creat(const char *name, [mode_t mode]);
+```
+* 반환값
+
+```
+성공시 : 할당된 fd
+실패시 : -1
+```
+
+#### close()
+close 함수는 작업이 끝난 후 파일을 닫는다.<br/>
+* 헤더
+
+```
+unistd.h
+```
+* 형태
+
+```c
+int close(int fd);
+```
+* 반환값
+
+```
+성공시 : 0
+실패시 : -1
+```
+
+#### read()
+read 함수를 fd가 나타내는 파일에서 데이터를 읽는다.<br/>
+* 헤더
+
+```
+unistd.h
+```
+* 형태
+
+```c
+ssize_t read(int fd, void *buf, size_t nbytes);
+```
+ssize_t : signed integer
+read 함수는 읽을 데이터가 충분하면 한 번에 nbytes 만큼 읽으며 읽을 데이터가 nbytes보다 적으면 더 적게 읽는다.<br/>
+
+* 반환값
+
+```
+성공시 : 읽은 바이트 수
+파일의 끝을 만난 경우 : 0
+실패시 : -1
+```
+
+#### write()
+write 함수는 fd가 나타내는 파일에 데이터를 쓴다.<br/>
+* 헤더
+
+```
+unistd.h
+```
+* 형태
+
+```c
+ssize_t write(int fd, void *buf, size_t nbytes);
+```
+* 반환값
+
+```
+성공시 : 파일에 쓰여진 데이터의 바이트 수
+실패시 : -1
+```
+
+
+#### lseek()
+lseek 함수는 파일을 열었을 때의 시작 위치를 이동한다.<br/>
+* 헤더
+
+```
+unistd.h
+```
+* 형태
+
+```c
+off_t write(int fd, off_t offset, int whence);
+```
+whence : 위치 기준점
+```
+SEEK_SET : 파일의 시작점을 기준으로 이동
+SEEK_CUR : 현재 위치를 기준으로 이동
+SEEK_END : 파일의 끝을 기준으로 이동
+```
+offset : 기준점에서의 상대적인 거리 (byte 단위)
+```
+SEEK_CUR, SEEK_END 와 같이 쓰일 때는 음수도 가능
+```
+
+* 반환값
+
+```
+성공시 : 현재 위치
+실패시 : -1
+```
+
 #### 참고자료
 https://ko.wikipedia.org/wiki/%ED%8C%8C%EC%9D%BC_%EC%84%9C%EC%88%A0%EC%9E%90<br/>
 https://twofootdog.tistory.com/51<br/>
