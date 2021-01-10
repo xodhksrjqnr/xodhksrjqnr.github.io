@@ -9,7 +9,7 @@ categories: Dummy
 # Get Next Line
 
 #### 개념
-Get Next Line(GNL)은 파일을 읽고 파일의 내용을 개행문자를 기준으로 한 줄씩 읽어 반환해주는 기능을 한다. <br/>
+Get Next Line(GNL)은 파일을 읽고 파일의 내용을 개행문자를 기준으로 한 줄씩 읽어 반환해주는 기능을 한다. GNL에 대한 설명에 앞서 필요한 사전 <br/>
 
 IP 주소는 IPv4와 IPv6 두 가지가 있다.<br/>
 
