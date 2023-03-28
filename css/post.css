@@ -1,6 +1,7 @@
 body {
     margin: 0;
     background-color: #6e6e6e;
+    overflow-x: hidden;
 }
 
 a {
@@ -13,18 +14,21 @@ a {
     height: 70px;
     padding-left: 10px;
     background-color: #3c3c3c;
+    z-index: 1;
     position: fixed;
 }
 
 #side {
-    width: 300px;
+    width: 250px;
     padding: 90px 10px 10px 10px;
     position: fixed;
+    background-color: #6e6e6e;
 }
 
 #article {
     width: 100%;
     padding: 90px 10px 10px 10px;
     margin-left: 300px;
-    position: fixed;
+    /*position: fixed;*/
+    color: white;
 }
