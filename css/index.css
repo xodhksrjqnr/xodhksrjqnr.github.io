@@ -1,36 +1,32 @@
 body {
     margin: 0;
-    padding: 5px;
     background-color: #6e6e6e;
     color: white;
 }
 
 #header {
     width: 100%;
-    height: 80px;
-    padding: 5px;
-    vertical-align: middle;
+    height: 70px;
+    background-color: #3c3c3c;
+    position: fixed;
 }
 
 #header a {
     text-decoration-line: none;
 }
 
-#main {
-    width: 100%;
-    height: 100%;
-    padding: 20px;
-}
-
-#main div {
-    float: left;
-}
-
 #side {
-    width: 200px;
-    padding: 10px;
+    width: 300px;
+    padding: 90px 10px 10px 10px;
+    position: fixed;
 }
 
 #side a {
     text-decoration-line: none;
+}
+
+#article {
+    width: 100%;
+    padding: 90px 10px 10px 10px;
+    margin-left: 300px;
 }
