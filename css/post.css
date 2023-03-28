@@ -2,7 +2,7 @@
     width: 100%;
     height: 80px;
     padding: 5px;
-    text-align: center;
+    vertical-align: middle;
     background-color: #6e6e6e;
     color: white;
 }
