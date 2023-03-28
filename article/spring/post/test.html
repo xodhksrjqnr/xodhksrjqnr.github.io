@@ -3,13 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/showdown/dist/showdown.min.js"></script>
     <script type="text/javascript">
         $(document).ready( function() {$("#header").load("../../../component/header.html");});
         $(document).ready( function() {$("#side").load("../side.html");});
+        $.get("/article/spring/markdown/test.md", function(data) {
+            var converter = new showdown.Converter();
+            htmlContent.innerHTML = converter.makeHtml(data);
+            document.getElementById('main').appendChild(htmlContent)
+        })
     </script>
 </head>
 <body>
     <div id="header"></div>
     <div id="side"></div>
+    <div id="main"></div>
 </body>
 </html>
