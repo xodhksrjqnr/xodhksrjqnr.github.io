@@ -4,15 +4,17 @@
     <meta charset="UTF-8">
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script type="text/javascript">
-        $(document).ready( function() {
-            $("#header").load("/component/header.html");
-        });
+        $(document).ready( function() {$("#header").load("/component/header.html");});
+        $(document).ready( function() {$("#side").load("/component/side.html");});
     </script>
 </head>
 <body>
     <div id="header"></div>
     <div id="main">
-        <p>This is my page</p>
+        <div id="side"></div>
+        <div id="article">
+            <p>test</p>
+        </div>
     </div>
 </body>
 </html>
