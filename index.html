@@ -6,6 +6,18 @@
     <script type="text/javascript">
         $(document).ready( function() {$("#header").load("/component/header.html");});
         $(document).ready( function() {$("#side").load("/component/side.html");});
+        $.get("/article/spring/markdown/test.md", function(data) {
+
+            var lines = data.split("\n");
+
+            $.each(lines, function(n, elem) {
+
+
+                alert(elem);
+
+            })
+
+        })
     </script>
 </head>
 <body>
