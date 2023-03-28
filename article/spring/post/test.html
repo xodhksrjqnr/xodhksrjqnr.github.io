@@ -7,7 +7,7 @@
     <script type="text/javascript">
         $(document).ready( function() {$("#header").load("../../../component/header.html");});
         $(document).ready( function() {$("#side").load("../side.html");});
-        $.get("/article/spring/markdown/test.md", function(data) {
+        $.get("../markdown/test.md", function(data) {
             var converter = new showdown.Converter();
             htmlContent.innerHTML = converter.makeHtml(data);
             document.getElementById('main').appendChild(htmlContent)
