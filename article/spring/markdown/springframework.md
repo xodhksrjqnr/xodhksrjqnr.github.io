@@ -1,3 +1,7 @@
+# Testing
+
+<br>
+
 ## 5.10. Executing SQL Scripts [#](https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#testcontext-executing-sql)
 
 관계형 데이터베이스와 관련된 통합 테스트를 작성할 때, SQL 스크립트를 실행해 스키마를 수정하거나
@@ -9,6 +13,8 @@ ApplicationContext가 로드될 때 SQL 스크립트를 실행하여 내장형 �
 ApplicationContext가 로드될 때 테스트를 위해 데이터베이스를 초기화하는 것이 매우 유용하지만,
 통합 테스트 중에 데이터베이스를 수정할 수 있어야 하는 경우도 있다. 다음 섹션에서는 통합 테스트 중에
 SQL 스크립트를 프로그래밍 방식으로 선언적으로 실행하는 방법을 설명한다.
+
+<br>
 
 ## 5.10.1. Executing SQL scripts programmatically [#](https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#testcontext-executing-sql-programmatically)
 
@@ -249,3 +255,29 @@ Spring Framework 5.2에서는 메서드 수준의 @Sql 선언을 클래스 수�
 테스트 방법(또는 특정 테스트 하위 클래스)에 대해 병합을 비활성화하려면 @SqlMergeMode(OVERRIDE)를
 통해 기본 모드로 다시 전환할 수 있다. 예제 및 자세한 내용은 [@SqlMergeMode 주석 문서 섹션](https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#spring-testing-annotation-sqlmergemode)을
 참조하자.
+
+<br>
+
+# Data Access
+
+참조 문서의 이 부분은 데이터 액세스 및 데이터 액세스 계층과 비즈니스 또는 서비스 계층 간의 상호 작용에
+관한 것이다.
+
+Spring의 포괄적인 트랜잭션 관리 지원은 Spring Framework가 통합되는 다양한 데이터 액세스 프레임워크
+및 기술에 대해 자세히 설명한다.
+
+<br>
+
+## Transaction Management [#](https://docs.spring.io/spring-framework/docs/current/reference/html/data-access.html#transaction)
+
+포괄적인 트랜잭션 지원은 Spring Framework를 사용해야 하는 가장 강력한 이유 중 하나이다. Spring
+Framework는 다음과 같은 이점을 제공하는 트랜잭션 관리를 위한 일관된 추상화를 제공한다.
+
+- Java Transaction API(JTA), JDBC, Hibernate 및 Java Persistence API(JPA)와
+- 같은 다양한 트랜잭션 API 간의 일관된 프로그래밍 모델이다.
+- 선언적 트랜잭션 관리를 지원한다.
+- JTA와 같은 복잡한 트랜잭션 API보다 프로그래밍 방식의 트랜잭션 관리를 위한 간단한 API이다.
+- Spring의 데이터 액세스 추상화와 완벽하게 통합된다.
+
+다음 섹션에서는 Spring Framework의 트랜잭션 기능과 기술에 대해 설명한다.
+
