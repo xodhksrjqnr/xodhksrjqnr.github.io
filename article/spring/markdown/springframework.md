@@ -41,6 +41,8 @@ populate(Connetion) 메서드나, "javax.sql.DataSource"에 대해 execute(DataS
 메서드를 호출하여 사용하자. 다음 예제에서는 테스트 스키마 및 테스트 데이터에 대한 SQL 스크립트를
 지정하고 문 구분 기호를 @@로 설정한 다음 DataSource에 대해 스크립트를 실행한다.
 
+<br>
+
 ```java
 @Test
 void databaseTest() {
@@ -54,11 +56,15 @@ void databaseTest() {
 }
 ```
 
+<br>
+
 ResourceDatabasePopulator는 내부적으로 ScriptUtils에 SQL 스크립트를 구문 분석하고
 실행하도록 위임한다. 마찬가지로, AbstractTransactional의 executeSqlScript(...)
 메서드는Junit4SpringContextTests 및 AbstractTransactionTestNGSpringContextTests는
 내부적으로 ResourceDatabasePopulator를 사용하여 SQL 스크립트를 실행한다.
 자세한 내용은 다양한 executeSqlScript(...) 메서드에 대한 [Javadoc](https://docs.spring.io/spring-framework/docs/6.0.7/javadoc-api/org/springframework/r2dbc/connection/init/ScriptUtils.html#executeSqlScript(io.r2dbc.spi.Connection,org.springframework.core.io.support.EncodedResource))을 참조하자.
+
+<br>
 
 ## 5.10.2. Executing SQL scripts declaratively with @Sql [#](https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#testcontext-executing-sql-declaratively)
 
@@ -72,6 +78,8 @@ SqlScriptsTestExecutionListener에 의해 제공된다.
 5.2에서 이 동작은 @SqlMergeMode를 통해 테스트 클래스 또는 테스트 방법별로 구성할 수 있다.
 자세한 내용은 [@SqlMergeMode와 구성 병합 및 재정의](https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#testcontext-executing-sql-declaratively-script-merging)를 참조하자.
 
+<br>
+
 ### Path Resource Semantics [#](https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#testcontext-executing-sql-declaratively-script-resources)
 
 각 경로는 Spring Resource로 해석된다. 일반 경로(예: "schema.sql")는 테스트 클래스가 정의된
@@ -81,6 +89,8 @@ file:, http:)는 지정된 리소스 프로토콜을 사용하여 로드된다.
 
 다음 예는 Junit Jupiter 기반 통합 테스트 클래스 내에서 클래스 수준 및 메서드 수준에서 @Sql을
 사용하는 방법을 보여준다.
+
+<br>
 
 ```java
 @SpringJUnitConfig
@@ -100,6 +110,8 @@ class DatabaseTests {
 }
 ```
 
+<br>
+
 ### Default Script Detection [#](https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#testcontext-executing-sql-declaratively-script-detection)
 
 SQL 스크립트 또는 문이 지정되지 않은 경우 @Sql이 선언된 위치에 따라 기본 스크립트를 검색하려고
@@ -110,6 +122,8 @@ SQL 스크립트 또는 문이 지정되지 않은 경우 @Sql이 선언된 위�
 - 메서드 수준 선언: 주석이 달린 테스트 방법의 이름이 testMethod()이고 com.example 클래스에
   정의되어 있는 경우.MyTest, 해당하는 기본 스크립트는 classpath:com/example/MyTest.testMethod.sql이다.
 
+<br>
+
 ### Declaring Multiple @Sql Sets [#](https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#testcontext-executing-sql-declaratively-multiple-annotations)
 
 지정된 테스트 클래스 또는 테스트 방법에 대해 여러 SQL 스크립트 세트를 구성해야 하지만 구문 구성,
@@ -118,6 +132,8 @@ Java 8에서는 @Sql을 반복 가능한 주석으로 사용할 수 있다. 그�
 @Sql의 여러 인스턴스를 선언하는 명시적 컨테이너로 사용할 수 있다.
 
 다음 예제에서는 Java 8에서 @Sql을 반복 가능한 주석으로 사용하는 방법을 보여 준다.
+
+<br>
 
 ```java
 @Test
@@ -128,12 +144,16 @@ void userTest() {
 }
 ```
 
+<br>
+
 위의 예에 제시된 시나리오에서 test-schema.sql 스크립트는 한 줄 주석에 대해 다른 구문을
 사용한다.
 
 다음 예는 @Sql 선언이 @SqlGroup 내에서 함께 그룹화된다는 점을 제외하고는 위의 예와 동일한다.
 Java 8 이상에서는 @SqlGroup을 선택적으로 사용할 수 있지만 Kotlin과 같은 다른 JVM 언어와의
 호환성을 위해 @SqlGroup을 사용해야 할 수도 있다.
+
+<br>
 
 ```java
 @Test
@@ -146,11 +166,15 @@ void userTest() {
 }
 ```
 
+<br>
+
 ### Script Execution Phases [#](https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#testcontext-executing-sql-declaratively-script-execution-phases)
 
 기본적으로 SQL 스크립트는 해당 테스트 메서드보다 먼저 실행된다. 그러나 테스트 메서드(예: 데이터베이스
 상태 정리) 후에 특정 스크립트 집합을 실행해야 하는 경우 다음 예제에서 볼 수 있듯이 @Sql의
 executionPhase 속성을 사용하자.
+
+<br>
 
 ```java
 @Test
@@ -169,8 +193,12 @@ void userTest() {
 }
 ```
 
+<br>
+
 ISOLATED와 AFTER_TEST_METHOD는 각각 Sql.TransactionMode와 Sql.ExecutionPhase에서
 정적으로 가져온다.
+
+<br>
 
 ### Script Configuration with @SqlConfig [#](https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#testcontext-executing-sql-declaratively-script-configuration)
 
@@ -192,6 +220,8 @@ ISOLATED와 AFTER_TEST_METHOD는 각각 Sql.TransactionMode와 Sql.ExecutionPhas
 및 [@SqlConfig](https://docs.spring.io/spring-framework/docs/6.0.7/javadoc-api/org/springframework/test/context/jdbc/SqlConfig.html)의
 개별 특성 javadoc을 참조하자.
 
+<br>
+
 #### Transaction management for @Sql
 
 기본적으로 SqlScriptsTestExecutionListener는 @Sql을 사용하여 구성된 스크립트에 대해 원하는
@@ -209,6 +239,8 @@ DataSource 및 PlatformTransactionManager를 검색하고 트랜잭션 의미를
 및 [SqlScriptsTestExecutionListener](https://docs.spring.io/spring-framework/docs/6.0.7/javadoc-api/org/springframework/test/context/jdbc/SqlScriptsTestExecutionListener.html)의
 javadoc은 자세한 정보를 제공하며, 다음 예는 Junit Jupiter 및 @Sql로 트랜잭션 테스트를 사용하는
 일반적인 테스트 시나리오를 보여준다.
+
+<br>
 
 ```java
 @SpringJUnitConfig(TestDatabaseConfig.class)
@@ -241,10 +273,14 @@ class TransactionalSqlScriptsTests {
 }
 ```
 
+<br>
+
 usersTest() 메서드를 실행한 후 데이터베이스를 정리할 필요가 없다. 데이터베이스가 변경된 경우(테스트
 메서드 내 또는 /test-data 내).SQL 스크립트)는 TransactionalTestExecutionListener에
 의해 자동으로 롤백된다(자세한 내용은 [트랜잭션 관리](https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#testcontext-tx)
 참조).
+
+<br>
 
 ### Merging and Overriding Configuration with @SqlMergeMode [#](https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#testcontext-executing-sql-declaratively-script-merging)
 
