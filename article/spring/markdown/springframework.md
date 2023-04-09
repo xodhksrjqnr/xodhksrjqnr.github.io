@@ -558,7 +558,7 @@ MockMvcWebTestClient.resultActionsFor(result)
         .andExpect(model().attribute("string", "a string value"));
 ```
 
-## 7.MockMvc
+## 7.MockMvc [#](https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#spring-mvc-test-framework)
 
 MockMvc라고도 하는 Spring MVC Test 프레임워크는 Spring MVC 애플리케이션 테스트를 지원한다.
 실행 중인 서버 대신 모의 요청 및 응답 개체를 통해 전체 Spring MVC 요청 처리를 수행한다.
@@ -568,9 +568,444 @@ MockMvc는 자체적으로 요청을 수행하고 응답을 확인하는 데 사
 상위 수준의 개체로 작업할 수 있는 옵션과 라이브 서버에 대한 전체 엔드 투 엔드 HTTP 테스트로 전환하고
 동일한 테스트 API를 사용할 수 있다는 것이다.
 
-### 7.1. Overview
+### 7.1. Overview [#](https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#spring-mvc-test-server)
 
+컨트롤러를 인스턴스화하고 종속성을 주입한 다음 해당 메서드를 호출하여 Spring MVC에 대한 일반 단위 검정을
+작성할 수 있다. 그러나 이러한 테스트는 요청 매핑, 데이터 바인딩, 메시지 변환, 유형 변환, 유효성 검사를
+수행하지 않으며 지원되는 @InitBinder, @ModelAttribute 또는 @ExceptionHandler 메서드도
+포함하지 않는다.
 
+MockMvc라고도 하는 Spring MVC Test 프레임워크는 실행 중인 서버가 없는 Spring MVC 컨트롤러에 대해
+보다 완벽한 테스트를 제공하는 것을 목표로 한다. 이는 DispatcherServlet을 호출하고 실행 중인 서버 없이
+전체 Spring MVC 요청 처리를 복제하는 스프링 테스트 모듈에서 [Servlet API의 "mock" 구현](https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#mock-objects-servlet)을
+전달함으로써 수행된다.
+
+MockMvc는 경량 및 표적 테스트를 사용하여 Spring MVC 응용프로그램의 대부분의 기능을 확인할 수 있는 서버
+측 테스트 프레임워크이다. 요청을 수행하고 응답을 확인하기 위해 자체적으로 사용하거나 MockMvc가 연결된 상태에서
+[WebTestClient](https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#webtestclient)
+API를 통해 요청을 처리할 서버로 사용할 수도 있다.
+
+### 7.2. Static Imports [#](https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#spring-mvc-test-server-static-imports)
+
+MockMvc를 직접 사용하여 요청을 수행하는 경우 다음에 대한 정적 가져오기가 필요하다.
+
+- MockMvcBuilders.*
+- MockMvcRequestBuilders.*
+- MockMvcResultMatchers.*
+- MockMvcResultHandlers*
+
+기억하기 쉬운 방법은 MockMvc*를 검색하는 것이다. Eclipse를 사용하는 경우 Eclipse 환경설정에서 위의
+내용을 "즐겨찾기 정적 멤버"로 추가해야 한다.
+
+[WebTestClient](https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#webtestclient)를
+통해 MockMvc를 사용하는 경우 정적 가져오기가 필요하지 않습니다. WebTestClient는 정적 가져오기 없이
+유창한 API를 제공한다.
+
+### 7.3. Setup Choices [#](https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#spring-mvc-test-server-setup-options)
+
+MockMvc는 두 가지 방법 중 하나로 설정할 수 있다. 하나는 테스트할 컨트롤러를 직접 가리키고 Spring MVC
+인프라를 프로그래밍 방식으로 구성하는 것이다. 두 번째는 스프링 MVC와 컨트롤러 인프라가 포함된 스프링 구성을
+가리키는 것이다.
+
+특정 컨트롤러를 테스트하기 위해 MockMvc를 설정하려면 다음을 사용한다.
+
+```java
+class MyWebTests {
+
+    MockMvc mockMvc;
+
+    @BeforeEach
+    void setup() {
+        this.mockMvc = MockMvcBuilders.standaloneSetup(new AccountController()).build();
+    }
+
+    // ...
+
+}
+```
+
+또는 위와 같은 작성자에게 위임하는 [WebTestClient](https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#webtestclient-controller-config)를
+통해 테스트할 때 이 설정을 사용할 수도 있다.
+
+Spring을 통한 MockMvc 구성을 설정하려면 다음을 사용한다.
+
+```java
+@SpringJUnitWebConfig(locations = "my-servlet-context.xml")
+class MyWebTests {
+
+    MockMvc mockMvc;
+
+    @BeforeEach
+    void setup(WebApplicationContext wac) {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+    }
+
+    // ...
+
+}
+```
+
+또는 위와 같은 작성자에게 위임하는 [WebTestClient](https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#webtestclient-context-config)를
+통해 테스트할 때 이 설정을 사용할 수도 있다.
+
+어떤 설정 옵션을 사용해야 할까?
+
+webAppContextSetup은 실제 Spring MVC 구성을 로드하여 보다 완벽한 통합 테스트를 수행한다.
+TestContext 프레임워크는 로드된 Spring 구성을 캐시하므로 테스트 제품군에 더 많은 테스트를 도입하는
+경우에도 테스트를 빠르게 실행할 수 있다. 또한 Spring 구성을 통해 모의 서비스를 컨트롤러에 주입하여 웹
+계층 테스트에 집중할 수 있다. 다음 예제에서는 Mockito를 사용하여 모의 서비스를 선언한다.
+
+```xml
+<bean id="accountService" class="org.mockito.Mockito" factory-method="mock">
+    <constructor-arg value="org.example.AccountService"/>
+</bean>
+```
+
+그런 다음 모의 서비스를 테스트에 주입하여 다음 예와 같이 기대치를 설정하고 확인할 수 있다.
+
+```java
+@SpringJUnitWebConfig(locations = "test-servlet-context.xml")
+class AccountTests {
+
+    @Autowired
+    AccountService accountService;
+
+    MockMvc mockMvc;
+
+    @BeforeEach
+    void setup(WebApplicationContext wac) {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+    }
+
+    // ...
+
+}
+```
+
+반면 standaloneSetup은 단위 테스트에 조금 더 가깝다. 한 번에 하나의 컨트롤러를 테스트한다. 수동으로
+컨트롤러에 모의 종속성을 주입할 수 있으며, 스프링 구성을 로드할 필요가 없다. 이러한 테스트는 스타일에 더
+중점을 두고 있으며 테스트 중인 컨트롤러, 특정 Spring MVC 구성이 작동해야 하는지 등을 쉽게 확인할 수 있다.
+또한 standaloneSetup는 특정 동작을 확인하거나 문제를 디버그하기 위해 임시 테스트를 작성하는 매우 편리한
+방법이다.
+
+대부분의 "통합 대 단위 테스트" 논쟁과 마찬가지로 정답도 오답도 없다. 그러나 standaloneSetup를 사용하면
+Spring MVC 구성을 확인하기 위해 추가 webAppContextSetup 테스트가 필요하다. 또는 webAppContextSetup으로
+모든 테스트를 작성하여 실제 Spring MVC 구성에 대해 항상 테스트할 수 있다.
+
+### 7.4. Setup Features [#](https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#spring-mvc-test-server-setup-steps)
+
+어떤 MockMvc 빌더를 사용하든 모든 MockMvcBuilder 구현은 몇 가지 공통적이고 매우 유용한 기능을 제공한다.
+예를 들어, 다음과 같이 모든 요청에 대해 Accept 헤더를 선언하고 상태를 200으로 예상하고 모든 응답에 Content-Type
+헤더를 지정할 수 있다.
+
+```java
+// static import of MockMvcBuilders.standaloneSetup
+
+MockMvc mockMvc = standaloneSetup(new MusicController())
+    .defaultRequest(get("/").accept(MediaType.APPLICATION_JSON))
+    .alwaysExpect(status().isOk())
+    .alwaysExpect(content().contentType("application/json;charset=UTF-8"))
+    .build();
+```
+
+또한 타사 프레임워크(및 애플리케이션)는 MockMvcConfigurer와 같은 설정 지침을 사전 패키지화할 수
+있다. Spring Framework에는 요청 간에 HTTP 세션을 저장하고 재사용하는 데 도움이 되는 이러한 기본
+제공 구현이 있다. 다음과 같이 사용할 수 있다.
+
+```java
+// static import of SharedHttpSessionConfigurer.sharedHttpSession
+
+MockMvc mockMvc = MockMvcBuilders.standaloneSetup(new TestController())
+        .apply(sharedHttpSession())
+        .build();
+
+// Use mockMvc to perform requests...
+```
+
+모든 MockMvc 빌더 기능 목록은 javadoc에 [ConfigurableMockMvcBuilder](https://docs.spring.io/spring-framework/docs/6.0.7/javadoc-api/org/springframework/test/web/servlet/setup/ConfigurableMockMvcBuilder.html)를
+참조하거나 IDE를 사용하여 사용 가능한 옵션을 탐색한다.
+
+### 7.5. Performing Requests [#](https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#spring-mvc-test-server-performing-requests)
+
+이 섹션에서는 MockMvc를 자체적으로 사용하여 요청을 수행하고 응답을 확인하는 방법을 보여준다다. WebTestClient를
+통해 MockMvc를 사용하는 경우 대신 [Writing Tests](https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#webtestclient-tests)의
+해당 섹션을 참조하자.
+
+다음 예제와 같이 HTTP 방법을 사용하는 요청을 수행한다.
+
+```java
+// static import of MockMvcRequestBuilders.*
+
+mockMvc.perform(post("/hotels/{id}", 42).accept(MediaType.APPLICATION_JSON));
+```
+
+또한 MockMultipartHttpServletRequest를 내부적으로 사용하는 파일 업로드 요청을 수행하여 다중 파트
+요청의 실제 구문 분석을 수행할 수 있다. 대신 다음 예제와 유사하게 설정해야 한다.
+
+```java
+mockMvc.perform(multipart("/doc").file("a1", "ABC".getBytes("UTF-8")));
+```
+
+다음 예제에서 알 수 있듯이 URI 템플릿 스타일로 쿼리 매개 변수를 지정할 수 있다.
+
+```java
+mockMvc.perform(get("/hotels?thing={thing}", "somewhere"));
+```
+
+또한 다음 예제와 같이 쿼리 또는 양식 매개 변수를 나타내는 Servlet 요청 매개 변수를 추가할 수 있다.
+
+```java
+mockMvc.perform(get("/hotels").param("thing", "somewhere"));
+```
+
+응용 프로그램 코드가 서블릿 요청 매개 변수에 의존하고 쿼리 문자열을 명시적으로 확인하지 않는 경우(대부분의
+경우처럼), 사용하는 옵션은 중요하지 않다. 그러나 URI 템플릿과 함께 제공된 쿼리 매개 변수는 디코딩되지만
+매개 변수(…) 메서드를 통해 제공된 요청 매개 변수는 이미 디코딩된다.
+
+대부분의 경우 컨텍스트 경로와 서블릿 경로는 요청 URI에서 제외하는 것이 좋다. 전체 요청 URI를 사용하여
+테스트해야 하는 경우 다음 예제와 같이 요청 매핑이 작동하도록 contextPath 및 servletPath를 적절하게
+설정해야 한다.
+
+```java
+mockMvc.perform(get("/app/main/hotels/{id}").contextPath("/app").servletPath("/main"))
+```
+
+위의 예에서는 수행된 모든 요청에 대해 contextPath 및 servletPath를 설정하는 것이 번거로울 수 있다.
+대신 다음 예제와 같이 기본 요청 속성을 설정할 수 있다.
+
+```java
+class MyWebTests {
+
+  MockMvc mockMvc;
+
+  @BeforeEach
+  void setup() {
+    mockMvc = standaloneSetup(new AccountController())
+            .defaultRequest(get("/")
+                    .contextPath("/app").servletPath("/main")
+                    .accept(MediaType.APPLICATION_JSON)).build();
+  }
+}
+```
+
+앞의 속성은 MockMvc 인스턴스를 통해 수행되는 모든 요청에 영향을 준다. 동일한 속성이 지정된 요청에도 지정된
+경우 기본값을 재정의한다. HTTP 메서드와 기본 요청의 URI는 모든 요청에 대해 지정되어야 하기 때문에 중요하지
+않다.
+
+### 7.6. Defining Expectations [#](https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#spring-mvc-test-server-defining-expectations)
+
+다음 예제에서 볼 수 있듯이 요청을 수행한 후 하나 이상의 andExpect(..) 호출을 추가하여 기대치를 정의할
+수 있다. 하나의 기대가 실패하는 순간, 다른 기대는 주장되지 않는다.
+
+```java
+// static import of MockMvcRequestBuilders.* and MockMvcResultMatchers.*
+
+mockMvc.perform(get("/accounts/1")).andExpect(status().isOk());
+```
+
+다음 예제에서 볼 수 있듯이 요청을 수행한 후 andExpectAll(..)을 추가하여 여러 기대치를 정의할 수
+있다. andExpect(..)와 달리 andExpectAll(..)는 제공된 모든 기대 사항이 보장되고 모든 장애가
+추적 및 보고된다.
+
+```java
+// static import of MockMvcRequestBuilders.* and MockMvcResultMatchers.*
+
+mockMvc.perform(get("/accounts/1")).andExpectAll(
+    status().isOk(),
+    content().contentType("application/json;charset=UTF-8"));
+```
+
+MockMvcResultMatchers.*는 다양한 기대 사항을 제공하며, 그 중 일부는 더 자세한 기대 사항으로 중첩된다.
+
+기대는 두 가지 일반적인 범주로 나뉜다. 첫 번째 범주의 어설션은 응답의 속성(예: 응답 상태, 헤더 및 내용)을
+확인한다. 이것들은 주장해야 할 가장 중요한 결과이다.
+
+두 번째 범주의 주장은 응답을 넘어선다. 이러한 주장을 통해 요청을 처리하는 컨트롤러 방법, 예외 발생 및 처리
+여부, 모델의 내용, 선택된 보기, 추가된 플래시 특성 등과 같은 Spring MVC 관련 측면을 검사할 수 있다.
+또한 요청 및 세션 속성과 같은 서블릿의 특정 측면을 검사할 수 있다.
+
+다음 테스트에서는 바인딩 또는 유효성 검사에 실패했다고 주장한다.
+
+```java
+mockMvc.perform(post("/persons"))
+    .andExpect(status().isOk())
+    .andExpect(model().attributeHasErrors("person"));
+```
+
+대부분의 경우 테스트를 작성할 때 수행된 요청의 결과를 출력하는 것이 유용하다. 다음과 같이 할 수 있다.
+여기서 print()은 MockMvcResultHandlers에서 정적으로 가져온 것이다.
+
+```java
+mockMvc.perform(post("/persons"))
+    .andDo(print())
+    .andExpect(status().isOk())
+    .andExpect(model().attributeHasErrors("person"));
+```
+
+요청 처리로 인해 처리되지 않은 예외가 발생하지 않는 한 print() 메서드는 사용 가능한 모든 결과 데이터를
+System.out에 출력한다. 또한, log() 메서드를 이용하거나 OutputStream이나 Writer를 이용하는
+print() 메서드와는 다른 두 가지 추가적인 방법이 존재한다. 예를 들어 print(System.err)를 호출하면
+결과 데이터가 System.err에 출력되고 print(myWriter)를 호출하면 결과 데이터가 사용자 정의 writer에
+출력된다. 결과 데이터를 출력하는 대신 기록하려면 결과 데이터를 org.springframework.test.web.servlet.result
+로깅 범주 아래에 단일 DEBUG 메시지로 기록하는 log() 메서드를 호출하면 된다.
+
+경우에 따라 결과에 직접 액세스하여 확인할 수 없는 내용을 확인해야 할 수도 있다. 이는 다음 예에서 알 수
+있듯이 다른 모든 예상 후에 .andReturn()를 추가하여 달성할 수 있다.
+
+```java
+MvcResult mvcResult = mockMvc.perform(post("/persons")).andExpect(status().isOk()).andReturn();
+// ...
+```
+
+모든 테스트가 동일한 기대치를 반복하는 경우 다음 예에서 볼 수 있듯이 MockMvc 인스턴스를 구축할 때 공통
+기대치를 한 번 설정할 수 있다.
+
+```java
+standaloneSetup(new SimpleController())
+    .alwaysExpect(status().isOk())
+    .alwaysExpect(content().contentType("application/json;charset=UTF-8"))
+    .build()
+```
+
+공통 기대치는 항상 적용되며 별도의 MockMvc 인스턴스를 만들지 않고는 재정의할 수 없다.
+
+JSON 응답 콘텐츠에 [Spring HATEOAS](https://github.com/spring-projects/spring-hateoas)로
+생성된 하이퍼미디어 링크가 포함되어 있는 경우 다음 예제와 같이 JsonPath 식을 사용하여 결과 링크를 확인할
+수 있다.
+
+```java
+mockMvc.perform(get("/people").accept(MediaType.APPLICATION_JSON))
+    .andExpect(jsonPath("$.links[?(@.rel == 'self')].href").value("http://localhost:8080/people"));
+```
+
+XML 응답 콘텐츠에 [Spring HATEOAS](https://github.com/spring-projects/spring-hateoas)로
+생성된 하이퍼미디어 링크가 포함된 경우 XPath 식을 사용하여 결과 링크를 확인할 수 있다.
+
+```java
+Map<String, String> ns = Collections.singletonMap("ns", "http://www.w3.org/2005/Atom");
+mockMvc.perform(get("/handle").accept(MediaType.APPLICATION_XML))
+    .andExpect(xpath("/person/ns:link[@rel='self']/@href", ns).string("http://localhost:8080/people"));
+```
+
+### 7.7. Async Requests [#](https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#spring-mvc-test-async-requests)
+
+이 섹션에서는 MockMvc를 자체적으로 사용하여 비동기 요청 처리를 테스트하는 방법을 보여 준다. [WebTestClient](https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#webtestclient)를
+통해 MockMvc를 사용하는 경우 WebTestClient가 이 절에 설명된 작업을 자동으로 수행하므로 비동기 요청이
+작동하도록 하기 위해 특별히 수행할 작업은 없다.
+
+[Spring MVC에서 지원](https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#mvc-ann-async)되는
+서블릿 비동기 요청은 서블릿 컨테이너 스레드를 종료하고 응용 프로그램이 응답을 비동기적으로 계산하도록 허용하는
+방식으로 작동하며, 그 후 서블릿 컨테이너 스레드에서 처리를 완료하기 위해 비동기 디스패치가 수행된다.
+
+Spring MVC Test에서는 먼저 생성된 비동기 값을 어설션한 다음 비동기 디스패치를 수동으로 수행하고 마지막으로
+응답을 확인하여 비동기 요청을 테스트할 수 있다. 다음은 리액터 Mono와 같은 DeferredResult, Callable
+또는 반응성 유형을 반환하는 컨트롤러 방법에 대한 테스트 예제이다.
+
+```java
+// static import of MockMvcRequestBuilders.* and MockMvcResultMatchers.*
+
+@Test
+void test() throws Exception {
+    MvcResult mvcResult = this.mockMvc.perform(get("/path"))
+            .andExpect(status().isOk()) (1)
+            .andExpect(request().asyncStarted()) (2)
+            .andExpect(request().asyncResult("body")) (3)
+            .andReturn();
+
+    this.mockMvc.perform(asyncDispatch(mvcResult)) (4)
+            .andExpect(status().isOk()) (5)
+            .andExpect(content().string("body"));
+}
+```
+
+- (1) 응답 상태가 여전히 변경되지 않았는지 확인
+- (2) 비동기 처리가 시작
+- (3) 비동기 결과를 기다리고 확인
+- (4) 실행 중인 컨테이너가 없으므로 수동으로 ASYNC 디스패치 수행
+- (5) 최종 응답 확인
+
+### 7.8. Streaming Responses [#](https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#spring-mvc-test-vs-streaming-response)
+
+Server-Sent Events와 같은 스트리밍 응답을 테스트하는 가장 좋은 방법은 실행 중인 서버 없이 Spring
+MVC 컨트롤러에서 테스트를 수행하기 위해 MockMvc 인스턴스에 연결하는 테스트 클라이언트로 사용할 수 있는
+[WebTestClient](https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#webtestclient)를
+사용하는 것이다.
+
+```java
+WebTestClient client = MockMvcWebTestClient.bindToController(new SseController()).build();
+
+FluxExchangeResult<Person> exchangeResult = client.get()
+        .uri("/persons")
+        .exchange()
+        .expectStatus().isOk()
+        .expectHeader().contentType("text/event-stream")
+        .returnResult(Person.class);
+
+// Use StepVerifier from Project Reactor to test the streaming response
+
+StepVerifier.create(exchangeResult.getResponseBody())
+        .expectNext(new Person("N0"), new Person("N1"), new Person("N2"))
+        .expectNextCount(4)
+        .consumeNextWith(person -> assertThat(person.getName()).endsWith("7"))
+        .thenCancel()
+        .verify();
+```
+
+또한 WebTestClient는 활성 서버에 연결하고 전체 종단 간 통합 테스트를 수행할 수 있다. [실행 중인 서버](https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.testing.spring-boot-applications.with-running-server)를
+테스트할 수 있는 Spring Boot에서도 지원된다.
+
+### 7.9. Filter Registrations [#](https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#spring-mvc-test-server-filters)
+
+MockMvc 인스턴스를 설정할 때 다음 예제와 같이 하나 이상의 Servlet Filter 인스턴스를 등록할 수 있다.
+
+```java
+mockMvc = standaloneSetup(new PersonController()).addFilters(new CharacterEncodingFilter()).build();
+```
+
+등록된 필터는 스프링 테스트부터 MockFilterChain을 통해 호출되며 마지막 필터는 DispatcherServlet에
+위임된다.
+
+### 7.10. MockMvc vs End-to-End Tests [#](https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#spring-mvc-test-vs-end-to-end-integration-tests)
+
+MockMvc는 spring-test 모듈의 Servlet API 모의 구현을 기반으로 하며 실행 중인 컨테이너에 의존하지
+않는다. 따라서 실제 클라이언트 및 실행 중인 활성 서버를 사용하는 전체 엔드 투 엔드 통합 테스트와 비교할
+때 몇 가지 차이점이 있다.
+
+이것에 대해 생각하는 가장 쉬운 방법은 비어있는 MockHttpServletRequest로 시작하는 것이다. 무엇을
+추가하든 간에 요청이 된다. 기본적으로 컨텍스트 경로, jsessionid 쿠키, 전달, 오류 또는 비동기 발송이
+없으므로 실제 JSP 렌더링이 없다. 대신, "전송" 및 "리다이렉트" URL은 MockHttpServletResponse에
+저장되며 예상과 함께 할당될 수 있다.
+
+즉, JSP를 사용하는 경우 요청이 전달된 JSP 페이지를 확인할 수 있지만 HTML은 렌더링되지 않는다. 즉,
+JSP는 호출되지 않는다. 그러나 Thymeleaf 및 Freemarker와 같이 전달에 의존하지 않는 다른 모든 렌더링
+기술은 예상대로 응답 본문에 HTML을 렌더링한다. @ResponseBody 메서드를 통해 JSON, XML 및 기타
+형식을 렌더링하는 경우에도 마찬가지이다.
+
+또는 @SpringBootTest를 사용한 SpringBoot의 전체 통합 테스트 지원을 고려할 수 있다.
+[스프링 부트 참조 가이드](https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.testing)를
+참조하자.
+
+각 접근 방식에는 장단점이 있다. Spring MVC Test에 제공되는 옵션은 기존 단위 테스트에서 완전 통합
+테스트에 이르기까지 스케일 상의 다양한 중단점이다. 확실히, Spring MVC Test의 어떤 옵션도 고전적인
+단위 테스트의 범주에 속하지 않지만, 그것들은 단위 테스트의 범주에 조금 더 가깝다. 예를 들어, 모의 서비스를
+컨트롤러에 주입하여 웹 계층을 분리할 수 있다. 이 경우 DispatcherServlet을 통해서만 웹 계층을
+테스트하고 실제 Spring 구성을 사용하여 웹 계층을 테스트한다. 이 경우 데이터 액세스 계층을 위의 계층과
+분리하여 테스트할 수 있다. 또한 독립 실행형 설정을 사용하여 한 번에 하나의 컨트롤러에 초점을 맞추고
+작동하는 데 필요한 구성을 수동으로 제공할 수 있다.
+
+Spring MVC Test를 사용할 때의 또 다른 중요한 차이점은 개념적으로 이러한 테스트가 서버 측이기 때문에
+사용된 핸들러, HandlerExceptionResolver를 사용하여 예외를 처리한 경우 모델의 내용, 바인딩 오류
+및 기타 세부 정보를 확인할 수 있다. 이는 서버가 실제 HTTP 클라이언트를 통해 테스트할 때처럼 불투명 상자가
+아니기 때문에 예상치를 기록하는 것이 더 쉽다는 것을 의미한다. 이는 일반적으로 고전적인 단위 테스트의 장점이다:
+쓰기, 추론 및 디버그가 더 쉽지만 전체 통합 테스트의 필요성을 대체하지는 않는다. 동시에, 대응이 가장 중요한
+것이라는 사실을 간과하지 않는 것이 중요하다. 간단히 말해서, 여기에는 동일한 프로젝트 내에서도 여러 가지
+스타일과 테스트 전략을 사용할 수 있는 여지가 있다.
+
+### 7.11. Further Examples [#](https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#spring-mvc-test-server-resources)
+
+프레임워크 자체 테스트에는 자체적으로 또는 WebTestClient를 통해 MockMvc를 사용하는 방법을 보여주는
+[많은 샘플 테스트](https://github.com/spring-projects/spring-framework/tree/main/spring-test/src/test/java/org/springframework/test/web/servlet/samples)가
+포함된다. 자세한 아이디어는 다음 예제를 참조하자.
 
 # Data Access
 
