@@ -31,8 +31,17 @@ a {
 
 #article {
     width: 900px;
-    padding: 90px 10px 10px 10px;
+    padding: 100px 10px 10px 10px;
     margin-left: 300px;
     /*position: fixed;*/
     color: #bebebe;
+}
+
+details {
+    color: #bebebe;
+    cursor: pointer;
+}
+
+details summary::marker{
+    font-size: 0;
 }
