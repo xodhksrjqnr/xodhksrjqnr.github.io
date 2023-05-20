@@ -12,13 +12,37 @@
             const htmlContent = document.createElement("div");
             var converter = new showdown.Converter();
             htmlContent.innerHTML = converter.makeHtml(data);
-            document.getElementById('article').appendChild(htmlContent)
+            document.getElementById('content').appendChild(htmlContent)
         })
+
+        function type1() {
+            $.get("../markdown/overview.md", function(data) {
+                const htmlContent = document.createElement("div");
+                var converter = new showdown.Converter();
+                htmlContent.innerHTML = converter.makeHtml(data);
+                document.getElementById('content').appendChild(htmlContent)
+            })
+        }
+
+        function type2() {
+            $.get("../markdown/overview-simple.md", function(data) {
+                const htmlContent = document.createElement("div");
+                var converter = new showdown.Converter();
+                htmlContent.innerHTML = converter.makeHtml(data);
+                document.getElementById('content').appendChild(htmlContent)
+            })
+        }
     </script>
 </head>
 <body>
     <div id="header"></div>
     <div id="side"></div>
-    <div id="article"></div>
+    <div id="article">
+        <div id="type">
+            <button onclick="type1()">원문</button>
+            <button onclick="type2()">정리</button>
+        </div>
+        <div id="content"></div>
+    </div>
 </body>
 </html>

@@ -45,3 +45,11 @@ details {
 details summary::marker{
     font-size: 0;
 }
+
+#type {
+    float: left;
+}
+
+#type button {
+    padding: 5px;
+}
