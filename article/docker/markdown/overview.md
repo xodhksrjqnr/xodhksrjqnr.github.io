@@ -1,6 +1,6 @@
 ## Docker overview [#](https://docs.docker.com/get-started/overview/)
 
-Docker는 애플리케이션을 개발, 배송 및 실행하기 위한 개방형 플랫폼이다. Docker를 사용하면
+Docker는 애플리케이션을 개발, 전송 및 실행하기 위한 개방형 플랫폼이다. Docker를 사용하면
 애플리케이션을 인프라에서 분리하여 소프트웨어를 신속하게 제공할 수 있고, 애플리케이션을
 관리하는 것과 동일한 방식으로 인프라를 관리할 수 있다. 코드를 신속하게 전송, 테스트 및
 배포하는 Docker의 방법론을 활용하면 코드를 작성하고 실제 환경에서 실행하는 데 걸리는 시간을
@@ -89,9 +89,9 @@ Helper가 포함된다. 자세한 내용은 [Docker Desktop](https://docs.docker
 
 ### Docker registries
 
-Docker 레지스트리는 Docker 이미지를 저장합니다. Docker Hub는 누구나 사용할
-수 있는 공용 레지스트리이며 Docker는 기본적으로 Docker Hub에서 이미지를 찾도록
-구성되어 있다. 개인 레지스트리를 실행할 수도 있다.
+Docker 레지스트리는 Docker 이미지를 저장한다. Docker Hub는 누구나 사용할 수 있는 공용
+레지스트리이며 Docker는 기본적으로 Docker Hub에서 이미지를 찾도록 구성되어 있다. 개인 레지스트리를
+실행할 수도 있다.
 
 `docker pull` 또는 `docker run` 명령을 사용하면 구성된 레지스트리에서 필요한
 이미지를 가져온다. `docker push` 명령을 사용하면 이미지가 구성된 레지스트리로
