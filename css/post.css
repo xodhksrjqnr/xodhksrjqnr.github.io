@@ -33,7 +33,6 @@ a {
     width: 900px;
     padding: 100px 10px 10px 10px;
     margin-left: 300px;
-    /*position: fixed;*/
     color: #bebebe;
 }
 
@@ -47,9 +46,14 @@ details summary::marker{
 }
 
 #type {
-    float: left;
+    border-bottom: 3px solid #bebebe;
+    display: inline-block;
 }
 
 #type button {
     padding: 5px;
+    color: #bebebe;
+    background: none;
+    border: none;
+    cursor: pointer;
 }
