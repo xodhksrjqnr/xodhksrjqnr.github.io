@@ -5,12 +5,13 @@
     <link rel="stylesheet" href="../../../css/post.css">
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="https://unpkg.com/showdown/dist/showdown.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/showdown-table@1.0.1/dist/showdown-table.min.js"></script>
     <script type="text/javascript">
         function load(target) {
             $.get(target, function(data) {
                 document.getElementById('content').innerText = "";
                 const htmlContent = document.createElement("div");
-                var converter = new showdown.Converter();
+                var converter = new showdown.Converter({extensions: ['table']});
                 htmlContent.innerHTML = converter.makeHtml(data);
                 document.getElementById('content').appendChild(htmlContent);
             })
@@ -27,7 +28,7 @@
     <div id="article">
         <div id="type">
             <button onclick="load('../markdown/overview.md')">원문</button>
-            <button onclick="load('../markdown/overview-simple.md')">정리</button>
+            <button onclick="load('../markdown/overview-summarize.md')">정리</button>
         </div>
         <div id="content"></div>
     </div>
