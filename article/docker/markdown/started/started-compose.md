@@ -3,21 +3,22 @@
 Docker Compose는 다중 컨테이너 응용 프로그램을 정의하고 공유하기 위해 개발된 도구이다. Compose를
 사용하면 YAML 파일을 생성하여 서비스를 정의하고 명령 하나로 모든 것을 회전시키거나 모두 해체할 수 있다.
 
-Compose를 사용하면 파일에서 응용프로그램 스택을 정의하고 프로젝트 레포(현재 버전 제어)의 루트에 보관할 수
-있으며 다른 사용자가 쉽게 프로젝트에 참여할 수 있다는 큰 장점이 있다. 누군가가 당신의 레포를 복제하고 작성
-앱을 시작하기만 하면 된다. 실제로 GitHub/GitLab에서 이와 같은 작업을 수행하는 프로젝트가 많이 있다.
+Compose를 사용하면 파일에서 응용 프로그램 스택을 정의하고 프로젝트 레포(현재 버전 제어)의 루트에 보관할
+수 있으며 다른 사용자가 쉽게 프로젝트에 참여할 수 있다는 큰 장점이 있다. 누군가가 당신의 레포를 복제하고
+작성 앱을 시작하기만 하면 된다. 실제로 GitHub/GitLab에서 이와 같은 작업을 수행하는 프로젝트가 많이
+있다.
 
 자, 어떻게 시작해야 할까?
 
 # Docker Compose 설치하기
 
 Windows, Mac 또는 Linux용 Docker Desktop을 설치한 경우 Docker Composite가 이미 설치되어
-있다! Play-with-Docker 인스턴스에는 Docker Compose도 이미 설치되어 있다.
+있다! Play-with-Docker 인스턴스에도 Docker Compose는 이미 설치되어 있다.
 
-Docker Engine을 독립 실행형으로 설치하려면 Docker Compose를 별도의 패키지로 설치해야 한다. 구성
-플러그인 설치를 참조하자.
+Docker Engine을 독립 실행형으로 설치하려면 Docker Compose를 별도의 패키지로 설치해야 한다. [구성
+플러그인 설치](https://docs.docker.com/compose/install/linux/)를 참조하자.
 
-설치 후 다음을 실행하고 버전 정보를 볼 수 있어야 한다.
+설치 후 다음 명령어를 실행하면 버전 정보를 볼 수 있다.
 
 ```
 docker compose version
@@ -26,7 +27,7 @@ docker compose version
 # Compose 파일 생성하기
 
 1. `/getting-started/app` 폴더의 루트에 `docker-compose.yml`라는 파일을 생성한다.
-2. 먼저 작성 파일에서 응용프로그램의 일부로 실행할 서비스(또는 컨테이너) 목록을 정의한다.
+2. 먼저 작성 파일에서 응용 프로그램의 일부로 실행할 서비스(또는 컨테이너) 목록을 정의한다.
 
 ```yaml
 services:
