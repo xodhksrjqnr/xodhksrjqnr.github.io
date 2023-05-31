@@ -4,21 +4,9 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="../../../css/post.css">
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="../../../js/load.js"></script>
     <script src="../../../js/showdown.js"></script>
     <script type="text/javascript">
-        function load(target) {
-            $.get(target, function(data) {
-                document.getElementById('content').innerText = "";
-                const htmlContent = document.createElement("div");
-                var converter = new showdown.Converter({extensions: ['table']});
-                htmlContent.innerHTML = converter.makeHtml(data);
-                document.getElementById('content').appendChild(htmlContent);
-                document.querySelectorAll('code').forEach(el => {
-                    hljs.highlightElement(el);
-                })
-            })
-        }
-
         $(document).ready( function() {$("#header").load("../../../component/header.html");});
         $(document).ready( function() {$("#side").load("../side.html");});
         load("../markdown/overview/overview.md");
