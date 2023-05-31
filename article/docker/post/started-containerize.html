@@ -4,19 +4,13 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="../../../css/post.css">
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript" src="https://unpkg.com/showdown/dist/showdown.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/showdown-table@1.0.1/dist/showdown-table.min.js"></script>
+    <script src="https://unpkg.com/showdown/dist/showdown.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark-reasonable.min.css">
+    <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/highlight.min.js"></script>
+    <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/languages/go.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/showdown-table@1.0.1/dist/showdown-table.min.js"></script>
+    <script src="../../../js/load.js"></script>
     <script type="text/javascript">
-        function load(target) {
-            $.get(target, function(data) {
-                document.getElementById('content').innerText = "";
-                const htmlContent = document.createElement("div");
-                var converter = new showdown.Converter({extensions: ['table']});
-                htmlContent.innerHTML = converter.makeHtml(data);
-                document.getElementById('content').appendChild(htmlContent);
-            })
-        }
-
         $(document).ready( function() {$("#header").load("../../../component/header.html");});
         $(document).ready( function() {$("#side").load("../side.html");});
         load("../markdown/started/started-containerize.md");
