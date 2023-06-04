@@ -67,7 +67,7 @@ PetClinicApplication in 11.743 seconds (JVM running for 12.364)
 
 다음으로, 애플리케이션에 사용할 기본 이미지를 Docker에 알려주는 줄을 Dockerfile에 추가해야 한다.
 
-```dockerfile
+```
 # syntax=docker/dockerfile:1
 
 FROM eclipse-temurin:17-jdk-jammy
@@ -80,7 +80,7 @@ Docker 이미지는 다른 이미지에서 상속될 수 있다. 이 가이드�
 명령의 기본 위치로 사용하도록 지시한다. 이렇게 하면 전체 파일 경로를 입력할 필요가 없고 작업 디렉터리를
 기반으로 상대 경로를 사용할 수 있다.
 
-```dockerfile
+```
 WORKDIR /app
 ```
 
@@ -92,7 +92,7 @@ WORKDIR /app
 변수는 이미지에 복사할 파일을 Docker에 알려준다. 두 번째 매개 변수는 해당 파일을 복사할 위치를 Docker에
 알려준다. 이러한 모든 파일과 디렉터리를 작업 디렉터리인 `/app`에 복사한다.
 
-```dockerfile
+```
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
 ```
@@ -101,7 +101,7 @@ COPY mvnw pom.xml ./
 실행할 수 있다. 이 방법은 컴퓨터에서 `mvn`(또는 `mvnw`) 종속성을 로컬로 실행하는 경우와 정확히
 동일하게 작동하지만, 이번에는 종속성이 이미지에 설치된다.
 
-```dockerfile
+```
 RUN ./mvnw dependency:resolve
 ```
 
@@ -109,7 +109,7 @@ RUN ./mvnw dependency:resolve
 다음으로 해야 할 일은 이미지에 소스 코드를 추가하는 것이다. 위의 `pom.xml` 파일과 마찬가지로 `COPY`
 명령을 사용한다.
 
-```dockerfile
+```
 COPY src ./src
 ```
 
@@ -117,13 +117,13 @@ COPY src ./src
 안에서 실행될 때 실행할 명령어를 Docker에게 알려주기만 하면 된다. 이 작업은 `CMD` 명령을 사용하여
 수행한다.
 
-```dockerfile
+```
 CMD ["./mvnw", "spring-boot:run"]
 ```
 
 완전한 Dockerfile이다.
 
-```dockerfile
+```
 # syntax=docker/dockerfile:1
 
 FROM eclipse-temurin:17-jdk-jammy

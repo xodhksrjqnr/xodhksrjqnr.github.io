@@ -1,8 +1,8 @@
-# 개발을 위한 컨테이너 사용
+# 개발을 위한 컨테이너 사용 [#](https://docs.docker.com/language/java/develop/)
 
 ## 전제 조건
 
-이미지를 컨테이너로 실행에서 이미지를 빌드하고 컨테이너형 응용 프로그램으로 실행하는 단계를 수행한다.
+이미지를 컨테이너로 실행하고 이미지를 빌드하고 컨테이너형 응용 프로그램으로 실행하는 단계를 수행한다.
 
 ## 소개
 
@@ -101,7 +101,7 @@ $ curl  --request GET \
 아래는 생산 이미지와 개발 이미지를 구축하는 데 사용할 다단계 Dockerfile이다. Dockerfile의 내용을
 다음으로 바꾼다.
 
-```dockerfile
+```
 # syntax=docker/dockerfile:1
 
 FROM eclipse-temurin:17-jdk-jammy as base
