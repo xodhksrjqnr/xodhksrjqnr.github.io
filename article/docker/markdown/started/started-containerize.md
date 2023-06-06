@@ -19,8 +19,8 @@ Node.js에 익숙하지 않은 경우에는 걱정할 필요없다. 이 안내�
 
 1. 다음 명령을 사용하여 시작 저장소를 복제하자:
 
-```bash
-git clone https://github.com/docker/getting-started.git
+```
+$ git clone https://github.com/docker/getting-started.git
 ```
 
 2. 복제된 리포지토리의 내용을 보자. `getting-started/app` 디렉터리 안에 `package.json`과 두
@@ -39,20 +39,20 @@ git clone https://github.com/docker/getting-started.git
 ### Mac/Linux
 
 ```
-cd /path/to/app
-touch Dockerfile
+$ cd /path/to/app
+$ touch Dockerfile
 ```
 
 ## Windows
 
 ```
-cd \path\to\app
-type nul > Dockerfile
+$ cd \path\to\app
+$ type nul > Dockerfile
 ```
 
 2. 텍스트 편집기 또는 코드 편집기를 사용하여 다음 내용을 Dockerfile에 추가하자:
 
-```dockerfile
+```
 # syntax=docker/dockerfile:1
    
 FROM node:18-alpine
@@ -69,8 +69,8 @@ EXPOSE 3000
 `getting-started/app` 디렉토리의 경로로 대체한다.
 
 ```
-cd /path/to/app
-docker build -t getting-started .
+$ cd /path/to/app
+$ docker build -t getting-started .
 ```
 
 `docker build` 명령은 Dockerfile을 사용하여 새 컨테이너 이미지를 빌드한다. Docker가 "레이어"를
@@ -95,7 +95,7 @@ Docker가 이미지를 다운로드한 후 Dockerfile의 지시사항이 응용�
 1. `docker run` 명령을 사용하여 컨테이너를 시작하고 방금 만든 이미지의 이름을 지정하자:
 
 ```
-docker run -dp 3000:3000 getting-started
+$ docker run -dp 3000:3000 getting-started
 ```
 
 `-d` 플래그를 사용하여 새 컨테이너를 백그라운드에서 "실행" 모드로 실행한다. 또한 `-p` 플래그를
@@ -118,5 +118,5 @@ docker run -dp 3000:3000 getting-started
 ### CLI
 
 ```
-docker ps
+$ docker ps
 ```

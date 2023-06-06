@@ -39,6 +39,7 @@ a {
 details {
     color: #bebebe;
     cursor: pointer;
+    text-indent: 30px;
 }
 
 details summary::marker{

@@ -22,7 +22,7 @@
    네임스페이스를 사용한다.
 
 ```
-docker push docker/getting-started
+$ docker push docker/getting-started
 The push refers to repository [docker.io/docker/getting-started]
 An image does not exist locally with the tag: docker/getting-started
 ```
@@ -38,7 +38,7 @@ An image does not exist locally with the tag: docker/getting-started
    `YOUR-USER-NAME`를 도커 ID로 교체해야 한다.
 
 ```
-docker tag getting-started YOUR-USER-NAME/getting-started
+$ docker tag getting-started YOUR-USER-NAME/getting-started
 ```
 
 `docker tag` 명령에 대한 자세한 내용은 [docker tag](https://docs.docker.com/engine/reference/commandline/tag/)를
@@ -49,7 +49,7 @@ docker tag getting-started YOUR-USER-NAME/getting-started
    사용한다.
 
 ```
-docker push YOUR-USER-NAME/getting-started
+$ docker push YOUR-USER-NAME/getting-started
 ```
 
 ## 새로운 인스턴스에서 이미지 실행하기
@@ -63,7 +63,7 @@ docker push YOUR-USER-NAME/getting-started
 > amd64 플랫폼용 이미지를 빌드하려면 `--platform` 플래그를 사용합니다.
 >
 > ```
-> docker build --platform linux/amd64 -t YOUR-USER-NAME/getting-started .
+> $ docker build --platform linux/amd64 -t YOUR-USER-NAME/getting-started .
 > ```
 >
 > Docker buildx는 다중 플랫폼 이미지 구축도 지원한다. 자세한 내용은 다중 플랫폼 이미지를 참조하자.
@@ -79,7 +79,7 @@ docker push YOUR-USER-NAME/getting-started
 5. 터미널에서 새로 푸시한 앱을 시작한다.
 
 ```
-docker run -dp 3000:3000 YOUR-USER-NAME/getting-started
+$ docker run -dp 3000:3000 YOUR-USER-NAME/getting-started
 ```
 
 이미지가 아래로 내려지고 결국 시작되는 것을 볼 수 있다.

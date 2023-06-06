@@ -20,19 +20,19 @@ todo items yet! Add one above!"로 변경한다.
 2. 파트 2에서 사용한 것과 동일한 `docker build` 명령을 사용하여 업데이트된 버전의 이미지를 빌드한다.
 
 ```
-docker build -t getting-started .
+$ docker build -t getting-started .
 ```
 
 3. 업데이트된 코드를 사용하여 새 컨테이너를 시작한다.
 
 ```
-docker run -dp 3000:3000 getting-started
+$ docker run -dp 3000:3000 getting-started
 ```
 
 다음과 같은 오류가 발생했을 수 있다(ID는 다르다):
 
 ```
-docker: Error response from daemon: driver failed programming external connectivity on endpoint laughing_burnell 
+$ docker: Error response from daemon: driver failed programming external connectivity on endpoint laughing_burnell 
 (bb242b2ca4d67eba76e79474fb36bb5125708ebdabd7f45c8eaf16caaabde9dd): Bind for 0.0.0.0:3000 failed: port is already allocated.
 ```
 
@@ -48,9 +48,9 @@ Desktop의 그래픽 인터페이스를 사용하여 이전 컨테이너를 제�
 ### CLI
 
 ```
-docker ps
-docker stop <the-container-id>
-docker rm <the-container-id>
+$ docker ps
+$ docker stop <the-container-id>
+$ docker rm <the-container-id>
 ```
 
 * `docker rm` 명령에 `force` 플래그를 추가하여 단일 명령으로 컨테이너를 중지 및 제거할 수 있다.
@@ -67,7 +67,7 @@ docker rm <the-container-id>
 1. 이제 `docker run` 명령을 사용하여 업데이트된 앱을 시작한다.
 
 ```
-docker run -dp 3000:3000 getting-started
+$ docker run -dp 3000:3000 getting-started
 ```
 
 2. http://localhost:3000에서 브라우저를 새로 고치면 업데이트된 도움말 텍스트가 표시된다.

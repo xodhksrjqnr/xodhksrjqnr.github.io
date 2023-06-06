@@ -16,7 +16,7 @@
 1. 1에서 10000 사이의 난수로 /data.txt라는 파일을 생성할 ubuntu 컨테이너를 시작한다.
 
 ```
-docker run -d ubuntu bash -c "shuf -i 1-10000 -n 1 -o /data.txt && tail -f /dev/null"
+$ docker run -d ubuntu bash -c "shuf -i 1-10000 -n 1 -o /data.txt && tail -f /dev/null"
 ```
 
 명령어가 궁금한 경우 bash 셸을 시작하고 두 개의 명령어(왜 `&&`가 있는지)를 호출해보자. 첫 번째 부분은
@@ -29,13 +29,13 @@ docker run -d ubuntu bash -c "shuf -i 1-10000 -n 1 -o /data.txt && tail -f /dev/
 ### CLI
 
 ```
-docker exec <container-id> cat /data.txt
+$ docker exec <container-id> cat /data.txt
 ```
 
 ### Docker Desktop
 
 ```
-cat /data.txt
+$ cat /data.txt
 ```
 
 3. 이제 다른 `ubuntu` 컨테이너(동일한 이미지)를 시작하면 동일한 파일이 없다는 것을 알 수 있다. Mac
@@ -43,7 +43,7 @@ cat /data.txt
    가져온다.
 
 ```
-docker run -it ubuntu ls /
+$ docker run -it ubuntu ls /
 ```
 
 이 경우 명령어는 컨테이너의 루트 디렉터리에 있는 파일을 나열한다. data.txt 파일이 없다! 그것은 첫 번째
@@ -81,7 +81,7 @@ docker run -it ubuntu ls /
 1. `docker volume create` 명령을 사용하여 볼륨을 생성합니다.
 
 ```
-docker volume create todo-db
+$ docker volume create todo-db
 ```
 
 2. 영구 볼륨을 사용하지 않고 계속 실행 중이므로 작업관리 앱 컨테이너를 중지하고 대시보드(또는
@@ -90,7 +90,7 @@ docker volume create todo-db
    지정하고 컨테이너의 `/etc/todos`에 마운트한다. 그러면 경로에서 생성된 모든 파일이 캡처된다.
 
 ```
-docker run -dp 3000:3000 --mount type=volume,src=todo-db,target=/etc/todos getting-started
+$ docker run -dp 3000:3000 --mount type=volume,src=todo-db,target=/etc/todos getting-started
 ```
 
 4. 컨테이너가 시작되면 앱을 열고 작업관리 목록에 몇 가지 항목을 추가한다.
@@ -111,7 +111,7 @@ docker run -dp 3000:3000 --mount type=volume,src=todo-db,target=/etc/todos getti
 `docker volume inspect` 명령을 사용하면 된다.
 
 ```
-docker volume inspect todo-db
+$ docker volume inspect todo-db
 [
     {
         "CreatedAt": "2019-09-26T02:18:36Z",

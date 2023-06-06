@@ -21,7 +21,7 @@ Docker Engine을 독립 실행형으로 설치하려면 Docker Compose를 별도
 설치 후 다음 명령어를 실행하면 버전 정보를 볼 수 있다.
 
 ```
-docker compose version
+$ docker compose version
 ```
 
 # Compose 파일 생성하기
@@ -40,7 +40,7 @@ services:
 이 명령어는 앱 컨테이너를 정의하는 데 사용되었다.
 
 ```
-docker run -dp 3000:3000 \
+$ docker run -dp 3000:3000 \
   -w /app -v "$(pwd):/app" \
   --network todo-app \
   -e MYSQL_HOST=mysql \
@@ -123,7 +123,7 @@ services:
 이제 MySQL 서비스를 정의할 차례이다. 해당 컨테이너에 사용한 명령은 다음과 같다:
 
 ```
-docker run -d \
+$ docker run -d \
   --network todo-app --network-alias mysql \
   -v todo-mysql-data:/var/lib/mysql \
   -e MYSQL_ROOT_PASSWORD=secret \
@@ -218,7 +218,7 @@ volumes:
 백그라운드에서 모든 것을 실행한다.
 
 ```
-docker compose up -d
+$ docker compose up -d
 ```
 
 이를 실행하면 다음과 같은 출력이 표시된다:

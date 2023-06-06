@@ -36,13 +36,13 @@ Windows(윈도우)에서 이 단계를 수행하는 경우 명령 프롬프트(`
 Mac 또는 Linux 장치를 사용하는 경우 다음 명령을 사용한다.
 
 ```
-docker run -it --mount type=bind,src="$(pwd)",target=/src ubuntu bash
+$ docker run -it --mount type=bind,src="$(pwd)",target=/src ubuntu bash
 ```
 
 Windows를 사용하는 경우 PowerShell에서 다음 명령을 사용한다.
 
 ```
-docker run -it --mount "type=bind,src=$pwd,target=/src" ubuntu bash
+$ docker run -it --mount "type=bind,src=$pwd,target=/src" ubuntu bash
 ```
 
 `--mount` 옵션은 Docker에 바인딩 마운트를 생성하도록 지시한다. 여기서 `src`은 호스트 시스템
@@ -112,7 +112,7 @@ Dockerfile  node_modules  package.json  spec  src  yarn.lock
 Mac 또는 Linux 장치를 사용하는 경우 다음 명령을 사용한다.
 
 ```
-docker run -dp 3000:3000 \
+$ docker run -dp 3000:3000 \
     -w /app --mount type=bind,src="$(pwd)",target=/app \
     node:18-alpine \
 ```
@@ -120,7 +120,7 @@ docker run -dp 3000:3000 \
 Windows를 사용하는 경우 PowerShell에서 다음 명령을 사용한다.
 
 ```
-docker run -dp 3000:3000 `
+$ docker run -dp 3000:3000 `
     -w /app --mount "type=bind,src=$pwd,target=/app" `
     node:18-alpine `
     sh -c "yarn install && yarn run dev"
@@ -139,7 +139,7 @@ docker run -dp 3000:3000 `
 준비가 완료되었음을 알 수 있다:
 
 ```
-docker logs -f <container-id>
+$ docker logs -f <container-id>
 nodemon src/index.js
 [nodemon] 2.0.20
 [nodemon] to restart at any time, enter `rs`
@@ -171,7 +171,7 @@ Listening on port 3000
 이미지를 작성한다:
 
 ```
-docker build -t getting-started .
+$ docker build -t getting-started .
 ```
 
 로컬 개발 설정에서는 바인딩 마운트를 사용하는 것이 일반적이다. 장점은 개발 기계가 모든 빌드 도구와 환경을

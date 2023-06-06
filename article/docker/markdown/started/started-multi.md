@@ -34,7 +34,7 @@
 1. 네트워크를 생성한다.
 
 ```
-docker network create todo-app
+$ docker network create todo-app
 ```
 
 2. MySQL 컨테이너를 시작하여 네트워크에 연결한다. 또한 데이터베이스를 초기화하는 데 사용할 몇 가지 환경
@@ -44,7 +44,7 @@ docker network create todo-app
 ### Mac/Linux
 
 ```
-docker run -d \
+$ docker run -d \
      --network todo-app --network-alias mysql \
      -v todo-mysql-data:/var/lib/mysql \
      -e MYSQL_ROOT_PASSWORD=secret \
@@ -55,7 +55,7 @@ docker run -d \
 ### Windows
 
 ```
-docker run -d `
+$ docker run -d `
      --network todo-app --network-alias mysql `
      -v todo-mysql-data:/var/lib/mysql `
      -e MYSQL_ROOT_PASSWORD=secret `
@@ -73,19 +73,19 @@ docker run -d `
 3. 데이터베이스가 실행 중인지 확인하려면 데이터베이스에 연결하고 연결되었는지 확인한다.
 
 ```
-docker exec -it <mysql-container-id> mysql -u root -p
+$ docker exec -it <mysql-container-id> mysql -u root -p
 ```
 
 암호 프롬프트가 나타나면 `secret`를 입력한다. MySQL 셸에서 데이터베이스를 나열하고 `todos`
 데이터베이스가 표시되는지 확인한다.
 
-```mysql
+```
 mysql> SHOW DATABASES;
 ```
 
 다음과 같은 출력이 표시된다:
 
-```mysql
+```
 +--------------------+
  | Database           |
  +--------------------+
@@ -100,7 +100,7 @@ mysql> SHOW DATABASES;
 
 4. MySQL 셸을 종료하고 시스템의 셸로 돌아간다.
 
-```mysql
+```
 mysql> exit
 ```
 
@@ -234,7 +234,7 @@ docker exec -it <mysql-container-id> mysql -p todos
 
 그리고 mysql 셸에서 다음을 실행한다:
 
-```mysql
+```
 mysql> select * from todo_items;
 +--------------------------------------+--------------------+-----------+
  | id                                   | name               | completed |

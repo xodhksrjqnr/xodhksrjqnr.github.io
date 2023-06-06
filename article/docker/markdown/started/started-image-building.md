@@ -7,7 +7,7 @@
 명령을 사용한다.
 
 ```
-docker image history getting-started
+$ docker image history getting-started
 ```
 
 다음과 같은 출력이 표시된다(날짜/ID는 다를 수 있다).
@@ -35,7 +35,7 @@ IMAGE               CREATED             CREATED BY                              
 2. 여러 줄이 잘린 것을 볼 수 있다. `--no-trunc` 플래그를 추가하면 전체 출력이 표시된다.
 
 ```
-docker image history --no-trunc getting-started
+$ docker image history --no-trunc getting-started
 ```
 
 # 계층 캐싱
@@ -47,7 +47,7 @@ docker image history --no-trunc getting-started
 
 우리가 사용하던 도커 파일을 한 번 더 보자.
 
-```dockerfile
+```
 # syntax=docker/dockerfile:1
 FROM node:18-alpine
 WORKDIR /app
@@ -68,7 +68,7 @@ CMD ["node", "src/index.js"]
 1. 먼저 `package.json`에서 복사할 Dockerfile를 업데이트하고 종속성을 설치한 다음 다른 모든 항목을
 복사한다.
 
-```dockerfile
+```
 # syntax=docker/dockerfile:1
  FROM node:18-alpine
  WORKDIR /app
@@ -94,7 +94,7 @@ node_modules
 3. `docker build`를 사용하여 새 이미지를 빌드한다.
 
 ```
-docker build -t getting-started .
+$ docker build -t getting-started .
 ```
 
 다음과 같은 출력이 표시된다.
@@ -163,7 +163,7 @@ Java 기반 응용 프로그램을 빌드할 때 소스 코드를 Java 바이트
 그러나 생산에는 JDK가 필요없다. 또한 Maven이나 Gradle과 같은 도구를 사용하여 앱을 구축할 수도 있다.
 그것들은 또한 우리의 최종 이미지에 필요없다. 다단계 빌드 도움말.
 
-```dockerfile
+```
 # syntax=docker/dockerfile:1
 FROM maven AS build
 WORKDIR /app
@@ -184,7 +184,7 @@ React 애플리케이션을 빌드할 때 JS 코드(일반적으로 JSX), SAS �
 CSS로 컴파일하기 위한 Node 환경이 필요하다. 서버 측 렌더링을 수행하지 않으면 프로덕션 빌드에 노드
 환경이 필요없다. 정적 nginx 컨테이너에 정적 리소스를 전달하는 것은 어떨까?
 
-```dockerfile
+```
 # syntax=docker/dockerfile:1
 FROM node:18 AS build
 WORKDIR /app
