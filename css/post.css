@@ -23,6 +23,7 @@ a {
     width: 250px;
     padding: 90px 10px 10px 10px;
     position: fixed;
+    font-size: 13px;
 }
 
 #side a {
@@ -39,11 +40,18 @@ a {
 details {
     color: #bebebe;
     cursor: pointer;
-    text-indent: 30px;
 }
 
 details summary::marker{
     font-size: 0;
+}
+
+.intent1 {
+    text-indent: 10px;
+}
+
+.intent2 {
+    text-indent: 20px;
 }
 
 #type {

@@ -77,7 +77,7 @@ jobs:
 ```
 
 <details>
-<summary>코드 분석</summary>
+<summary>‣ 코드 분석</summary>
 
 ```yaml
 # name: [name] - 선택사항으로 "Actions" 탭에 나타나는 workflow의 이름
