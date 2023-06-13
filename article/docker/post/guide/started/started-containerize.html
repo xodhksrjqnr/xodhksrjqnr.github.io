@@ -12,14 +12,18 @@
     <script src="/js/load.js"></script>
     <script src="/js/basic.js"></script>
     <script type="text/javascript">
-        $(document).ready( function() {$("#side").load("/article/spring/side.html");});
-        load("/article/spring/markdown/springframework/data-access.md");
+        $(document).ready( function() {$("#side").load("/article/docker/side.html");});
+        load("/article/docker/markdown/guide/started/started-containerize.md");
     </script>
 </head>
 <body>
     <div id="header"></div>
     <div id="side"></div>
     <div id="article">
+        <div id="type">
+            <button onclick="load('/article/docker/markdown/guide/started/started-containerize.md')">원문</button>
+<!--            <button onclick="load('/article/docker/markdown/guide/started/started-containerize-summarize.md')">정리</button>-->
+        </div>
         <div id="content"></div>
     </div>
 </body>

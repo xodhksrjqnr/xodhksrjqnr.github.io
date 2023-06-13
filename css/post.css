@@ -48,10 +48,17 @@ details summary::marker{
 
 .intent1 {
     text-indent: 10px;
+    line-height: 20px;
 }
 
 .intent2 {
     text-indent: 20px;
+    line-height: 20px;
+}
+
+.intent3 {
+    text-indent: 25px;
+    line-height: 20px;
 }
 
 #type {

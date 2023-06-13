@@ -141,7 +141,7 @@ version: '3.8'
 services:
   petclinic:
     build:
-      context: .
+      context: ../../../../../../../../../..
       target: development
     ports:
       - "8000:8000"
