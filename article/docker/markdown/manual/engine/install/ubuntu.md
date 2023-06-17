@@ -79,7 +79,7 @@ $ sudo apt-get install ca-certificates curl gnupg
 ```
 $ sudo install -m 0755 -d /etc/apt/keyrings
 $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-$ sudo chmod a+r /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
 ```
 
 3. 다음 명령을 사용하여 리포지토리를 설정한다:
