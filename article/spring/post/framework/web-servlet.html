@@ -13,13 +13,17 @@
     <script src="/js/basic.js"></script>
     <script type="text/javascript">
         $(document).ready( function() {$("#side").load("/article/spring/side.html");});
-        load("/article/spring/markdown/springframework/testing.md")
+        load("/article/spring/markdown/framework/web-servlet.md");
     </script>
 </head>
 <body>
     <div id="header"></div>
     <div id="side"></div>
     <div id="article">
+        <div id="type">
+            <button onclick="load('/article/spring/markdown/framework/web-servlet.md')">번역</button>
+            <!--        <button onclick="load('/article/spring/markdown/framework/web-servlet-summarize.md')">정리</button>-->
+        </div>
         <div id="content"></div>
     </div>
 </body>
