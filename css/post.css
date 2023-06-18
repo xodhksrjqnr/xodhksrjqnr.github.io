@@ -61,6 +61,11 @@ details summary::marker{
     line-height: 20px;
 }
 
+.intent4 {
+    text-indent: 30px;
+    line-height: 20px;
+}
+
 #type {
     border-bottom: 3px solid #bebebe;
     display: inline-block;
