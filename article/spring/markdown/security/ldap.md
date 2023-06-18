@@ -15,14 +15,15 @@ LDAP 서버를 구성하는 방법에는 여러 가지 시나리오가 있으므
 ## 전제 조건
 
 Spring Security와 함께 사용하기 전에 LDAP에 대해 잘 알고 있어야 한다. 다음 링크에서는 관련된 개념에
-대한 좋은 소개와 무료 LDAP 서버인 OpenLDAP: www.zytrax.com/books/ldap/ 를 사용하여 디렉토리를
-설정하는 방법을 안내한다. Java에서 LDAP에 액세스하는 데 사용되는 JNDI API에 대한 일부 지식도 유용할
-수 있다. LDAP 공급자에서 타사 LDAP 라이브러리(Mozilla, JLDAP 등)를 사용하지 않지만 Spring
-LDAP를 광범위하게 사용하므로 자체 사용자 정의를 추가할 계획인 경우 해당 프로젝트에 대한 익숙함이 유용할
-수 있다.
+대한 좋은 소개와 무료 LDAP 서버인 OpenLDAP: [www.zytrax.com/books/ldap/](https://www.zytrax.com/books/ldap/)를
+사용하여 디렉토리를 설정하는 방법을 안내한다. Java에서 LDAP에 액세스하는 데 사용되는 JNDI API에 대한
+일부 지식도 유용할 수 있다. LDAP 공급자에서 타사 LDAP 라이브러리(Mozilla, JLDAP 등)를 사용하지
+않지만 Spring LDAP를 광범위하게 사용하므로 자체 사용자 정의를 추가할 계획인 경우 해당 프로젝트에 대한
+익숙함이 유용할 수 있다.
 
-LDAP 인증을 사용할 때는 LDAP 연결 풀링을 올바르게 구성해야 한다. 방법에 익숙하지 않은 경우 Java
-LDAP 설명서를 참조하자.
+LDAP 인증을 사용할 때는 LDAP 연결 풀링을 올바르게 구성해야 한다. 방법에 익숙하지 않은 경우 [Java
+LDAP 설명서](https://docs.oracle.com/javase/jndi/tutorial/ldap/connect/config.html)를
+참조하자.
 
 ## 내장된 LDAP 서버 설정
 
@@ -97,7 +98,7 @@ UnboundID를 사용하려면 다음 종속성을 지정하자:
 
 ### Gradle
 
-```groovy
+```
 depenendencies {
 	runtimeOnly "com.unboundid:unboundid-ldapsdk:6.0.8"
 }
