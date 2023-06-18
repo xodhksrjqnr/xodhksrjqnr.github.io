@@ -30,6 +30,10 @@ a {
     color: #bebebe;
 }
 
+#side p {
+    margin: 0;
+}
+
 #article {
     width: 900px;
     padding: 100px 10px 10px 10px;
@@ -63,6 +67,11 @@ details summary::marker{
 
 .intent4 {
     text-indent: 30px;
+    line-height: 20px;
+}
+
+.intent5 {
+    text-indent: 35px;
     line-height: 20px;
 }
 
