@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <title>TWDocs</title>
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="https://unpkg.com/showdown/dist/showdown.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark-reasonable.min.css">
@@ -15,11 +16,14 @@
         $(document).ready( function() {$("#side").load("/component/side.html");});
         load("/README.md");
     </script>
+    <script src="/js/createButton.js"></script>
+    <script src="/js/changeArticle.js"></script>
 </head>
 <body>
     <div id="header"></div>
     <div id="side"></div>
     <div id="article">
+        <div id="type"></div>
         <div id="content"></div>
     </div>
 </body>
