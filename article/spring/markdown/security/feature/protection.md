@@ -1,35 +1,33 @@
-# Protection Against Exploits
+# 악용 방지 [#](https://docs.spring.io/spring-security/reference/features/exploits/index.html)
 
-## Cross Site Request Forgery (CSRF) [#](https://docs.spring.io/spring-security/reference/features/exploits/csrf.html)
+스프링 시큐리티는 일반적인 공격으로부터 보호한다. 가능할 때마다 보호는 기본적으로 활성화된다. 이 섹션에서는
+스프링 시큐리티가 보호하는 다양한 악용에 대해 설명한다.
 
-Spring은 사이트 간 요청 위조(CSRF) 공격으로부터 보호하기 위한 포괄적인 지원을 제공한다. 다음 섹션에서는
+# Cross Site Request Forgery (CSRF) [#](https://docs.spring.io/spring-security/reference/features/exploits/csrf.html)
+
+스프링은 사이트 간 요청 위조(CSRF) 공격으로부터 보호하기 위한 포괄적인 지원을 제공한다. 다음 섹션에서는
 다음을 살펴본다:
 
 - CSRF 공격이란 무엇인가?
 - CSRF 공격으로부터 보호
 - CSRF 고려사항
 
-> 설명서의 이 부분에서는 CSRF 보호의 일반적인 주제에 대해 설명햔다. 서블릿 및 WebFlux 기반 응용
+> 설명서의 이 부분에서는 CSRF 보호의 일반적인 주제에 대해 설명한다. 서블릿 및 WebFlux 기반 응용
 > 프로그램의 CSRF 보호에 대한 자세한 내용은 관련 섹션을 참조하자.
 
-## CSRF 공격이란 무엇인가?
+# CSRF 공격이란 무엇인가?
 
 CSRF 공격을 이해하는 가장 좋은 방법은 구체적인 예를 살펴보는 것이다.
 
-은행의 웹 사이트에서 현재 로그인한 사용자의 돈을 다른 은행 계좌로 이체할 수 있는 양식을 제공한다고 가정하자.
-예를 들어 전송 양식은 다음과 같다:
+은행의 웹 사이트에서 현재 로그인한 사용자의 돈을 다른 은행 계좌로 이체할 수 있는 양식을 제공한다고
+가정하자. 예를 들어 전송 양식은 다음과 같다:
 
-```
-<form method="post"
-	action="/transfer">
-<input type="text"
-	name="amount"/>
-<input type="text"
-	name="routingNumber"/>
-<input type="text"
-	name="account"/>
-<input type="submit"
-	value="Transfer"/>
+```html
+<form method="post" action="/transfer">
+    <input type="text" name="amount"/>
+    <input type="text" name="routingNumber"/>
+    <input type="text" name="account"/>
+    <input type="submit" value="Transfer"/>
 </form>
 ```
 
@@ -47,87 +45,72 @@ amount=100.00&routingNumber=1234&account=9876
 이제 은행 웹 사이트에 인증한 후 로그아웃하지 않고 악의적인 웹 사이트를 방문하는 것으로 가정하자. 악의적인
 웹 사이트에는 다음과 같은 형식의 HTML 페이지가 포함되어 있다:
 
-```
-<form method="post"
-	action="https://bank.example.com/transfer">
-<input type="hidden"
-	name="amount"
-	value="100.00"/>
-<input type="hidden"
-	name="routingNumber"
-	value="evilsRoutingNumber"/>
-<input type="hidden"
-	name="account"
-	value="evilsAccountNumber"/>
-<input type="submit"
-	value="Win Money!"/>
+```html
+<form method="post" action="https://bank.example.com/transfer">
+    <input type="hidden" name="amount" value="100.00"/>
+    <input type="hidden" name="routingNumber" value="evilsRoutingNumber"/>
+    <input type="hidden" name="account" value="evilsAccountNumber"/>
+    <input type="submit" value="Win Money!"/>
 </form>
 ```
 
-당신은 돈을 따는 것을 좋아해서 제출 버튼을 클릭한다. 이 과정에서 의도치 않게 악의적인 사용자에게 100달러를
-송금했다. 이 문제는 악의적인 웹 사이트에서 쿠키를 볼 수 없는 경우에도 은행과 연결된 쿠키가 요청과 함께 계속
-전송되기 때문이다.
+당신은 돈을 따는 것을 좋아해서 제출 버튼을 클릭한다. 이 과정에서 의도치 않게 악의적인 사용자에게
+100달러를 송금했다. 이 문제는 악의적인 웹 사이트에서 쿠키를 볼 수 없는 경우에도 은행과 연결된 쿠키가
+요청과 함께 계속 전송되기 때문이다.
 
 더 나쁜 것은, 자바스크립트를 사용함으로써 이 모든 과정이 자동화될 수 있었다는 것이다. 이는 버튼을 클릭할
 필요가 없었다는 것을 의미한다. 또한 XSS 공격의 피해자인 정직한 사이트를 방문할 때도 쉽게 발생할 수 있다.
 그렇다면 이러한 공격으로부터 사용자를 보호하려면 어떻게 해야 할까?
 
-## CSRF 공격으로부터 보호
+# CSRF 공격으로부터 보호
 
-CSRF 공격이 가능한 이유는 피해자 웹사이트의 HTTP 요청과 공격자 웹사이트의 요청이 정확히 일치하기 때문이다.
-이는 악의적인 웹 사이트에서 오는 요청을 거부할 방법이 없으며 은행 웹 사이트에서 오는 요청만 허용한다는 것을
-의미한다. CSRF 공격으로부터 보호하기 위해서는 요청에 악의적인 사이트가 제공할 수 없는 무언가가 있는지
-확인하여 두 요청을 구별할 수 있어야 한다.
+CSRF 공격이 가능한 이유는 피해자 웹사이트의 HTTP 요청과 공격자 웹사이트의 요청이 정확히 일치하기
+때문이다. 이는 악의적인 웹 사이트에서 오는 요청을 거부할 방법이 없으며 은행 웹 사이트에서 오는 요청만
+허용한다는 것을 의미한다. CSRF 공격으로부터 보호하기 위해서는 요청에 악의적인 사이트가 제공할 수 없는
+무언가가 있는지 확인하여 두 요청을 구별할 수 있어야 한다.
 
-Spring은 CSRF 공격으로부터 보호하기 위한 두 가지 메커니즘을 제공한다:
+스프링은 CSRF 공격으로부터 보호하기 위한 두 가지 메커니즘을 제공한다:
 
 - 싱크로나이저 토큰 패턴
 - 세션 쿠키에서 동일한 사이트 속성 지정
 
 > 두 가지 보호 방법 모두 안전한 방법을 사용해야 한다.
 
-### 안전한 방법은 동일해야 한다
+# 안전한 방법은 동일해야 한다
 
-CSRF에 대한 보호가 작동하려면 응용 프로그램에서 "안전한" HTTP 메서드가 동일한지 확인해야 한다. 즉,
-HTTP `GET`, `HEAD`, `OPTIONS` 및 `TRACE` 메서드를 사용하는 요청은 응용 프로그램의 상태를
-변경하지 않아야 한다.
+CSRF에 대한 보호가 작동하려면 응용 프로그램에서 ["안전한" HTTP 메서드가 동일](https://datatracker.ietf.org/doc/html/rfc7231#section-4.2.1)한지
+확인해야 한다. 즉, HTTP `GET`, `HEAD`, `OPTIONS` 및 `TRACE` 메서드를 사용하는 요청은 응용
+프로그램의 상태를 변경하지 않아야 한다.
 
-### Synchronizer Token Pattern
+# 싱크로나이저 토큰 패턴
 
-CSRF 공격으로부터 보호하는 가장 일반적이고 포괄적인 방법은 Synchronizer 토큰 패턴을 사용하는 것이다.
-이 솔루션은 각 HTTP 요청에 세션 쿠키 외에도 HTTP 요청에 CSRF 토큰이라는 안전한 랜덤 생성 값이
-필요하도록 하는 것이다.
+CSRF 공격으로부터 보호하는 가장 일반적이고 포괄적인 방법은 [싱크로나이저 토큰 패턴](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html#synchronizer-token-pattern)을
+사용하는 것이다. 이 솔루션은 각 HTTP 요청에 세션 쿠키 외에도 HTTP 요청에 CSRF 토큰이라는 안전한 랜덤
+생성 값이 필요하도록 하는 것이다.
 
 HTTP 요청이 제출되면 서버는 예상 CSRF 토큰을 조회하여 HTTP 요청의 실제 CSRF 토큰과 비교해야 한다.
 값이 일치하지 않으면 HTTP 요청을 거부해야 한다.
 
 이 작업의 핵심은 실제 CSRF 토큰이 브라우저에 의해 자동으로 포함되지 않는 HTTP 요청의 일부에 있어야
-한다는 것이다. 예를 들어 HTTP 매개 변수 또는 HTTP 헤더에 실제 CSRF 토큰이 필요하면 CSRF 공격으로부터
-보호된다. 쿠키가 브라우저에 의해 HTTP 요청에 자동으로 포함되기 때문에 쿠키에 실제 CSRF 토큰이 필요하지
-않다.
+한다는 것이다. 예를 들어 HTTP 매개 변수 또는 HTTP 헤더에 실제 CSRF 토큰이 필요하면 CSRF
+공격으로부터 보호된다. 쿠키가 브라우저에 의해 HTTP 요청에 자동으로 포함되기 때문에 쿠키에 실제 CSRF
+토큰이 필요하지 않다.
 
-애플리케이션 상태를 업데이트하는 각 HTTP 요청에 대해 실제 CSRF 토큰만 요구하도록 기대를 완화할 수
-있다. 그것이 작동하려면, 우리의 애플리케이션은 안전한 HTTP 메소드가 동일한지 확인해야 한다. 이렇게 하면
-외부 사이트에서 웹 사이트로의 링크를 허용하기 때문에 사용성이 향상된다. 또한 임의 토큰을 HTTP GET에
-포함하지 않는다. 이렇게 하면 토큰이 유출될 수 있기 때문이다.
+애플리케이션 상태를 업데이트하는 각 HTTP 요청에 대해 실제 CSRF 토큰만 요구하도록 기대를 완화할 수 있다.
+그것이 작동하려면, 우리의 애플리케이션은 안전한 HTTP 메소드가 동일한지 확인해야 한다. 이렇게 하면 외부
+사이트에서 웹 사이트로의 링크를 허용하기 때문에 사용성이 향상된다. 또한 임의 토큰을 HTTP GET에 포함하지
+않는다. 이렇게 하면 토큰이 유출될 수 있기 때문이다.
 
-Synchronizer 토큰 패턴을 사용할 때 예제가 어떻게 변경되는지 고려해야 한다. 실제 CSRF 토큰이
+싱크로나이저 토큰 패턴을 사용할 때 예제가 어떻게 변경되는지 고려해야 한다. 실제 CSRF 토큰이
 `_csrf`라는 HTTP 매개 변수에 있어야 한다고 가정하자. 우리의 지원서의 이전 양식은 다음과 같다:
 
-```
-<form method="post"
-	action="/transfer">
-<input type="hidden"
-	name="_csrf"
-	value="4bfd1575-3ad1-4d21-96c7-4ef2d9f86721"/>
-<input type="text"
-	name="amount"/>
-<input type="text"
-	name="routingNumber"/>
-<input type="hidden"
-	name="account"/>
-<input type="submit"
-	value="Transfer"/>
+```html
+<form method="post" action="/transfer">
+    <input type="hidden" name="_csrf" value="4bfd1575-3ad1-4d21-96c7-4ef2d9f86721"/>
+    <input type="text" name="amount"/>
+    <input type="text" name="routingNumber"/>
+    <input type="hidden" name="account"/>
+    <input type="submit" value="Transfer"/>
 </form>
 ```
 
@@ -145,17 +128,17 @@ Content-Type: application/x-www-form-urlencoded
 amount=100.00&routingNumber=1234&account=9876&_csrf=4bfd1575-3ad1-4d21-96c7-4ef2d9f86721
 ```
 
-이제 HTTP 요청에 보안 임의 값을 가진 `_csrf` 매개 변수가 포함되어 있다. 악의적인 웹 사이트는 `_csrf`
-매개 변수(악의 웹 사이트에서 명시적으로 제공되어야 함)에 대한 올바른 값을 제공할 수 없으며 서버가 실제
-CSRF 토큰을 예상 CSRF 토큰과 비교할 때 전송이 실패한다.
+이제 HTTP 요청에 보안 임의 값을 가진 `_csrf` 매개 변수가 포함되어 있다. 악의적인 웹 사이트는
+`_csrf` 매개 변수(악의 웹 사이트에서 명시적으로 제공되어야 함)에 대한 올바른 값을 제공할 수 없으며
+서버가 실제 CSRF 토큰을 예상 CSRF 토큰과 비교할 때 전송이 실패한다.
 
-### 동일 사이트 속성
+# 동일 사이트 속성
 
 CSRF 공격으로부터 보호하는 새로운 방법은 쿠키에 `SameSite` 속성을 지정하는 것이다. 서버는 외부
 사이트에서 쿠키를 전송하지 않도록 쿠키를 설정할 때 동일한 사이트 속성을 지정할 수 있다.
 
-> Spring Security는 세션 쿠키 작성을 직접 제어하지 않으므로 `SameSite` 속성에 대한 지원을 제공하지
-> 않는다. Spring Session은 서블릿 기반 응용 프로그램에서 `SameSite` 특성을 지원한다. Spring
+> 스프링 시큐리티는 세션 쿠키 작성을 직접 제어하지 않으므로 `SameSite` 속성에 대한 지원을 제공하지
+> 않는다. 스프링 Session은 서블릿 기반 응용 프로그램에서 `SameSite` 특성을 지원한다. 스프링
 > Framework의 `CookieWebSessionIdResolver`는 WebFlux 기반 응용 프로그램에서 `SameSite`
 > 속성을 즉시 지원한다.
 
@@ -173,8 +156,8 @@ HTTP 요청에 포함되지 않는다.
 - `Lax`: 이 옵션을 지정하면 동일한 사이트에서 오거나 최상위 탐색에서 요청이 왔을 때 메서드가 동일할 때
 쿠키가 전송된다. 그렇지 않으면 쿠키가 HTTP 요청에 포함되지 않는다.
 
-`SameSite` 특성을 사용하여 예제를 보호하는 방법을 고려한다. 은행 응용 프로그램은 세션 쿠키에 `SameSite`
-특성을 지정하여 CSRF로부터 보호할 수 있다.
+`SameSite` 특성을 사용하여 예제를 보호하는 방법을 고려한다. 은행 응용 프로그램은 세션 쿠키에
+`SameSite` 특성을 지정하여 CSRF로부터 보호할 수 있다.
 
 세션 쿠키에 `SameSite` 속성이 설정된 상태에서 브라우저는 은행 웹 사이트에서 오는 요청과 함께
 `JSESSIONID` 쿠키를 계속 보낸다. 그러나 브라우저는 더 이상 `JSESSIONID` 쿠키를 악의적인 웹
@@ -199,49 +182,48 @@ HTTP 요청에 포함되지 않는다.
 이러한 이유로 일반적으로 CSRF 공격에 대한 단독 보호보다는 심층 방어로 동일 사이트 특성을 사용하는 것이
 좋다.
 
-## CSRF 보호를 사용해야 하는 경우
+# CSRF 보호를 사용해야 하는 경우
 
 CSRF 보호를 사용해야 하는 경우는 언제일까? 일반 사용자가 브라우저에서 처리할 수 있는 모든 요청에 대해
 CSRF 보호를 사용하는 것이 좋다. 브라우저가 아닌 클라이언트에서만 사용하는 서비스를 만드는 경우 CSRF
 보호를 사용하지 않도록 설정할 수 있다.
 
-### CSRF 보호 및 JSON
+# CSRF 보호 및 JSON
 
-일반적인 질문은 "JSON 요청을 JavaScript에서 보호해야 합니까?"이다 간단한 대답은 다음과 같다: 사정에
+일반적인 질문은 "JSON 요청을 자바스크립트에서 보호해야 합니까?"이다. 간단한 대답은 다음과 같다: 사정에
 따라 다르다. 그러나 JSON 요청에 영향을 줄 수 있는 CSRF 악용이 있으므로 매우 주의해야 한다. 예를 들어
 악의적인 사용자는 다음 양식을 사용하여 JSON으로 CSRF를 생성할 수 있다:
 
-```
+```html
 <form action="https://bank.example.com/transfer" method="post" enctype="text/plain">
 	<input name='{"amount":100,"routingNumber":"evilsRoutingNumber","account":"evilsAccountNumber", "ignore_me":"' value='test"}' type='hidden'>
-	<input type="submit"
-		value="Win Money!"/>
+	<input type="submit" value="Win Money!"/>
 </form>
 ```
 
 이를 통해 다음과 같은 JSON 구조가 생성된다:
 
-```
-{ "amount": 100,
-"routingNumber": "evilsRoutingNumber",
-"account": "evilsAccountNumber",
-"ignore_me": "=test"
+```json
+{
+  "amount": 100,
+  "routingNumber": "evilsRoutingNumber",
+  "account": "evilsAccountNumber",
+  "ignore_me": "=test"
 }
 ```
 
 응용 프로그램이 `Content-Type` 헤더의 유효성을 검사하지 않는 경우 이 취약성에 노출된다. 설정에 따라
-`.json`으로 끝나는 URL 접미사를 다음과 같이 업데이트하여 `Content-Type`의 유효성을 확인하는
-Spring MVC 애플리케이션을 계속 이용할 수 있다:
+`.json`으로 끝나는 URL 접미사를 다음과 같이 업데이트하여 `Content-Type`의 유효성을 확인하는 스프링
+MVC 애플리케이션을 계속 이용할 수 있다:
 
-```
+```html
 <form action="https://bank.example.com/transfer.json" method="post" enctype="text/plain">
 	<input name='{"amount":100,"routingNumber":"evilsRoutingNumber","account":"evilsAccountNumber", "ignore_me":"' value='test"}' type='hidden'>
-	<input type="submit"
-		value="Win Money!"/>
+	<input type="submit" value="Win Money!"/>
 </form>
 ```
 
-### CSRF 및 상태 비저장 브라우저 응용 프로그램
+# CSRF 및 상태 비저장 브라우저 응용 프로그램
 
 응용 프로그램이 상태 비저장이면 어떻게 해야 할까? 그렇다고 해서 반드시 보호받는 것은 아니다. 실제로
 사용자가 지정된 요청에 대해 웹 브라우저에서 작업을 수행할 필요가 없는 경우에도 CSRF 공격에 여전히 취약할
@@ -251,7 +233,7 @@ Spring MVC 애플리케이션을 계속 이용할 수 있다:
 응용 프로그램을 생각해 보자. CSRF 공격이 발생하면 이전 예제에서 `JSESSIONID` 쿠키가 전송된 것과
 동일한 방식으로 사용자 지정 쿠키가 요청과 함께 전송된다. 이 응용 프로그램은 CSRF 공격에 취약하다.
 
-## CSRF 고려사항
+# CSRF 고려사항
 
 CSRF 공격에 대한 보호를 구현할 때 고려해야 할 몇 가지 특별한 고려 사항이 있다.
 
@@ -262,7 +244,8 @@ CSRF 공격에 대한 보호를 구현할 때 고려해야 할 몇 가지 특별
 
 1) 악의적인 사용자는 악의적인 사용자의 자격 증명으로 CSRF 로그인을 수행한다. 이제 공격 대상자가 악의적인
 사용자로 인증되었다.
-2) 그런 다음 악의적인 사용자는 공격 대상자를 속여 손상된 웹 사이트를 방문하고 중요한 정보를 입력하도록 한다.
+2) 그런 다음 악의적인 사용자는 공격 대상자를 속여 손상된 웹 사이트를 방문하고 중요한 정보를 입력하도록
+한다.
 3) 이 정보는 악의적인 사용자의 계정과 연결되므로 악의적인 사용자는 자신의 자격 증명으로 로그인하고 공격
 대상자의 중요한 정보를 볼 수 있다.
 
@@ -271,7 +254,7 @@ CSRF 공격에 대한 보호를 구현할 때 고려해야 할 몇 가지 특별
 예상되는 사용자에게 놀라운 일이다. 자세한 내용은 CSRF 및 세션 시간 초과를 참조하자.
 
 기본 인증을 사용하는 응용 프로그램도 CSRF 공격에 취약하다. 이전 예제에서 JSESSIONID 쿠키를 보낸 것과
-동일한 방식으로 브라우저가 모든 요청에 사용자 이름과 암호를 자동으로 포함하므로 응용프로그램이 취약하다.
+동일한 방식으로 브라우저가 모든 요청에 사용자 이름과 암호를 자동으로 포함하므로 응용 프로그램이 취약하다.
 
 ### 로그아웃
 
@@ -284,52 +267,53 @@ CSRF 공격에 대한 보호를 구현할 때 고려해야 할 몇 가지 특별
 초과로 인해 요청이 거부될 수 있다는 것이다. 세션 시간 초과는 로그아웃할 세션이 없을 것으로 예상되는
 사용자에게 놀라운 일이다. 자세한 내용은 CSRF 및 세션 시간 초과를 참조하자.
 
-### CSRF 및 세션 시간 초과
+# CSRF 및 세션 시간 초과
 
 예상 CSRF 토큰이 세션에 저장되는 경우가 많다. 즉, 세션이 만료되는 즉시 서버는 예상된 CSRF 토큰을 찾지
 못하고 HTTP 요청을 거부한다. 시간 초과를 해결하기 위한 여러 가지 옵션(각각의 옵션은 트레이드오프와 함께
 제공됨)이 있다:
 
-- 시간 초과를 줄이는 가장 좋은 방법은 양식 제출 시 JavaScript를 사용하여 CSRF 토큰을 요청하는
-것이다. 그런 다음 양식이 CSRF 토큰으로 업데이트되고 제출된다.
-- 또 다른 옵션은 세션이 곧 만료된다는 것을 사용자에게 알리는 JavaScript를 사용하는 것이다. 사용자는
+- 시간 초과를 줄이는 가장 좋은 방법은 양식 제출 시 자바스크립트를 사용하여 CSRF 토큰을 요청하는 것이다.
+그런 다음 양식이 CSRF 토큰으로 업데이트되고 제출된다.
+- 또 다른 옵션은 세션이 곧 만료된다는 것을 사용자에게 알리는 자바스크립트를 사용하는 것이다. 사용자는
 버튼을 클릭하여 세션을 계속하고 새로 고칠 수 있다.
 - 마지막으로 예상되는 CSRF 토큰을 쿠키에 저장할 수 있다. 이렇게 하면 예상 CSRF 토큰이 세션보다 오래
 사용될 수 있다.
 - 예상 CSRF 토큰이 기본적으로 쿠키에 저장되지 않는 이유를 물을 수 있다. 이는 다른 도메인에서 헤더(예:
-쿠키 지정)를 설정할 수 있는 알려진 공격이 있기 때문이다. 이것은 Ruby on Rails가 `X-Requested-With`
-헤더가 있을 때 CSRF 검사를 건너뛰지 않는 것과 같은 이유이다. 공격을 수행하는 방법에 대한 자세한 내용은
-이 [webappsec.org 스레드](https://web.archive.org/web/20210221120355/https://lists.webappsec.org/pipermail/websecurity_lists.webappsec.org/2011-February/007533.html)를
+쿠키 지정)를 설정할 수 있는 알려진 공격이 있기 때문이다. 이것은 Ruby on Rails가
+`X-Requested-With` 헤더가 있을 때 CSRF 검사를 건너뛰지 않는 것과 같은 이유이다. 공격을 수행하는
+방법에 대한 자세한 내용은 이 [webappsec.org 스레드](https://web.archive.org/web/20210221120355/https://lists.webappsec.org/pipermail/websecurity_lists.webappsec.org/2011-February/007533.html)를
 참조하자. 또 다른 단점은 상태(즉, 시간 초과)를 제거함으로써 토큰이 손상된 경우 토큰을 강제로 무효화하는
 기능을 잃게 된다는 것이다.
 
-### 멀티파트(파일 업로드)
+# 멀티파트(파일 업로드)
 
-CSRF 공격으로부터 다중 파트 요청(파일 업로드)을 보호하면 치킨 또는 에그 문제가 발생한다. CSRF 공격이
-발생하지 않도록 하려면 HTTP 요청 본문을 읽어 실제 CSRF 토큰을 얻어야 한다. 그러나 본문을 읽는다는 것은
-파일이 업로드되었음을 의미하며, 이는 외부 사이트에서 파일을 업로드할 수 있음을 의미한다.
+CSRF 공격으로부터 다중 파트 요청(파일 업로드)을 보호하면 [치킨 또는 에그 문제](https://en.wikipedia.org/wiki/Chicken_or_the_egg)가
+발생한다. CSRF 공격이 발생하지 않도록 하려면 HTTP 요청 본문을 읽어 실제 CSRF 토큰을 얻어야 한다.
+그러나 본문을 읽는다는 것은 파일이 업로드되었음을 의미하며, 이는 외부 사이트에서 파일을 업로드할 수 있음을
+의미한다.
 
-다중 부품/폼 데이터와 함께 CSRF 보호를 사용하는 두 가지 옵션이 있다:
+`multipart/form-data`와 함께 CSRF 보호를 사용하는 두 가지 옵션이 있다:
 
 - 본문에 CSRF 토큰 배치
 - URL에 CSRF 토큰 배치
 
 각 옵션에는 트레이드오프가 있다.
 
-> Spring Security의 CSRF 보호를 멀티파트 파일 업로드와 통합하기 전에 먼저 CSRF 보호 없이 업로드할
-> 수 있는지 확인해야 한다. 스프링과 함께 다중 부품 양식을 사용하는 방법에 대한 자세한 내용은 1.1.11을
-> 참조하자. Spring 참조 및 [MultipartFilter](https://docs.spring.io/spring-framework/docs/5.2.x/javadoc-api/org/springframework/web/multipart/support/MultipartFilter.html)
-> Javadoc의 [Multipart Resolver](https://docs.spring.io/spring-framework/docs/5.2.x/spring-framework-reference/web.html#mvc-multipart)
-> 섹션.
+> 스프링 시큐리티의 CSRF 보호를 멀티파트 파일 업로드와 통합하기 전에 먼저 CSRF 보호 없이 업로드할 수
+> 있는지 확인해야 한다. 스프링과 함께 multipart forms 사용에 대한 자세한 내용은 스프링 참조의
+> [1.1.11. Multipart Resolver](https://docs.spring.io/spring-framework/docs/5.2.x/spring-framework-reference/web.html#mvc-multipart)와
+> [MultipartFilter Javadoc](https://docs.spring.io/spring-framework/docs/5.2.x/javadoc-api/org/springframework/web/multipart/support/MultipartFilter.html)
+> 섹션을 참조하자.
 
-#### 본문에 CSRF 토큰 배치
+### 본문에 CSRF 토큰 배치
 
 첫 번째 옵션은 요청 본문에 실제 CSRF 토큰을 포함하는 것이다. CSRF 토큰을 본문에 배치하면 승인이
 수행되기 전에 본문을 읽었다. 즉, 모든 사용자가 서버에 임시 파일을 저장할 수 있다. 그러나 인증된 사용자만
 응용 프로그램에서 처리한 파일을 제출할 수 있다. 일반적으로 이 방법은 권장되는 방법이다. 임시 파일 업로드는
 대부분의 서버에 거의 영향을 미치지 않기 때문이다.
 
-#### URL에 CSRF 토큰 포함
+### URL에 CSRF 토큰 포함
 
 권한 없는 사용자가 임시 파일을 업로드하도록 허용할 수 없는 경우 양식의 작업 속성에 예상 CSRF 토큰을 쿼리
 매개 변수로 포함하는 방법이 있다. 이 방법의 단점은 쿼리 매개 변수가 유출될 수 있다는 것이다. 일반적으로
@@ -337,24 +321,21 @@ CSRF 공격으로부터 다중 파트 요청(파일 업로드)을 보호하면 �
 [RFC 2616 섹션 15.1.3](https://www.w3.org/Protocols/rfc2616/rfc2616-sec15.html#sec15.1.3)
 중요한 정보 인코딩에서 추가 정보를 찾을 수 있다.
 
-#### 숨겨진 Http 메서드 필터
+### 숨겨진 Http 메서드 필터
 
 일부 응용 프로그램은 폼 매개 변수를 사용하여 HTTP 메서드를 재정의할 수 있다. 예를 들어, 다음 양식은
 HTTP 메소드를 `post`가 아닌 `delete`로 처리할 수 있다.
 
-```
-<form action="/process"
-	method="post">
+```html
+<form action="/process" method="post">
 	<!-- ... -->
-	<input type="hidden"
-		name="_method"
-		value="delete"/>
+	<input type="hidden" name="_method" value="delete"/>
 </form>
 ```
 
-HTTP 메서드를 재정의하는 작업은 필터에서 수행된다. 해당 필터는 Spring Security의 지원보다 먼저
-배치해야 한다. 재정의는 `post`에서만 발생하므로 실제 문제가 발생할 가능성은 거의 없다. 그러나 Spring
-Security의 필터 앞에 배치하는 것이 가장 좋다.
+HTTP 메서드를 재정의하는 작업은 필터에서 수행된다. 해당 필터는 스프링 시큐리티의 지원보다 먼저 배치해야
+한다. 재정의는 `post`에서만 발생하므로 실제 문제가 발생할 가능성은 거의 없다. 그러나 스프링 시큐리티의
+필터 앞에 배치하는 것이 가장 좋다.
 
 ## Security HTTP Response Headers [#](https://docs.spring.io/spring-security/reference/features/exploits/headers.html)
 
@@ -362,16 +343,16 @@ Security의 필터 앞에 배치하는 것이 가장 좋다.
 > 응용 프로그램의 보안 HTTP 응답 헤더에 대한 자세한 내용은 관련 섹션을 참조하자.
 
 HTTP 응답 헤더를 여러 가지 방법으로 사용하여 웹 응용 프로그램의 보안을 강화할 수 있다. 이 섹션에서는
-Spring Security가 명시적으로 지원하는 다양한 HTTP 응답 헤더에 대해 설명한다. 필요한 경우 사용자
-정의 헤더를 제공하도록 Spring Security를 구성할 수도 있다.
+스프링 시큐리티가 명시적으로 지원하는 다양한 HTTP 응답 헤더에 대해 설명한다. 필요한 경우 사용자
+정의 헤더를 제공하도록 스프링 시큐리티를 구성할 수도 있다.
 
 ## 기본 보안 헤더
 
 > 서블릿 기반 및 웹 플럭스 기반 응용 프로그램의 기본값을 사용자 정의하는 방법은 관련 섹션을 참조하자.
 
-Spring Security는 보안 기본값을 제공하기 위해 보안 관련 HTTP 응답 헤더의 기본 집합을 제공한다.
+스프링 시큐리티는 보안 기본값을 제공하기 위해 보안 관련 HTTP 응답 헤더의 기본 집합을 제공한다.
 
-Spring Security의 기본값은 다음 헤더를 포함하는 것이다:
+스프링 시큐리티의 기본값은 다음 헤더를 포함하는 것이다:
 
 ```
 Cache-Control: no-cache, no-store, max-age=0, must-revalidate
@@ -398,7 +379,7 @@ X-XSS-Protection: 0
 
 > 서블릿 및 웹 플럭스 기반 응용 프로그램의 기본값을 사용자 지정하는 방법은 관련 섹션을 참조하자.
 
-Spring Security의 기본값은 캐시를 사용하지 않도록 설정하여 사용자의 콘텐츠를 보호하는 것이다.
+스프링 시큐리티의 기본값은 캐시를 사용하지 않도록 설정하여 사용자의 콘텐츠를 보호하는 것이다.
 
 사용자가 중요한 정보를 보기 위해 인증한 다음 로그아웃하는 경우 악의적인 사용자가 중요한 정보를 보기 위해
 뒤로 단추를 클릭하지 못하도록 한다. 기본적으로 전송되는 캐시 제어 헤더는 다음과 같다:
@@ -409,8 +390,8 @@ Pragma: no-cache
 Expires: 0
 ```
 
-기본적으로 보안을 유지하기 위해 Spring Security는 이러한 헤더를 기본적으로 추가한다. 그러나 응용
-프로그램이 자체 캐시 제어 헤더를 제공하는 경우 Spring Security는 방해가 되지 않는다. 이렇게 하면
+기본적으로 보안을 유지하기 위해 스프링 시큐리티는 이러한 헤더를 기본적으로 추가한다. 그러나 응용
+프로그램이 자체 캐시 제어 헤더를 제공하는 경우 스프링 시큐리티는 방해가 되지 않는다. 이렇게 하면
 응용 프로그램에서 정적 리소스(예: CSS 및 JavaScript)를 캐시할 수 있다.
 
 ## Content Type Options
@@ -423,7 +404,7 @@ Expires: 0
 콘텐츠 유형을 추측하여 실행할 수 있다.
 
 > 내용 업로드를 허용할 때 수행해야 하는 추가 작업은 여러 가지가 있다(예: 문서를 별도의 도메인에 표시하거나,
-> 내용 유형 헤더가 설정되었는지 확인하거나, 문서를 검사하거나, 기타 작업). 그러나 이러한 조치는 Spring
+> 내용 유형 헤더가 설정되었는지 확인하거나, 문서를 검사하거나, 기타 작업). 그러나 이러한 조치는 스프링
 > Security에서 제공하는 범위를 벗어난다. 또한 내용 스니핑을 사용하지 않도록 설정할 때 내용이 제대로
 > 작동하려면 내용 유형을 지정해야 한다.
 
@@ -432,7 +413,7 @@ Expires: 0
 문서를 웹 사이트에 제출하고 볼 수 있다. 악의적인 사용자는 유효한 JavaScript 파일이기도 한
 포스트스크립트 문서를 만들고 이를 사용하여 XSS 공격을 수행할 수 있다.
 
-기본적으로 Spring Security는 HTTP 응답에 다음 헤더를 추가하여 내용 스니핑을 비활성화한다:
+기본적으로 스프링 시큐리티는 HTTP 응답에 다음 헤더를 추가하여 내용 스니핑을 비활성화한다:
 
 ```
 X-Content-Type-Options: nosniff
@@ -458,7 +439,7 @@ X-Content-Type-Options: nosniff
 > 서명한 CA를 신뢰해야 한다(SSL 인증서뿐만 아니라).
 
 사이트를 HSTS 호스트로 표시하는 한 가지 방법은 호스트를 브라우저에 미리 로드하는 것이다. 다른 방법은
-응답에 `Strict-Transport-Security` 헤더를 추가하는 것이다. 예를 들어 Spring Security의
+응답에 `Strict-Transport-Security` 헤더를 추가하는 것이다. 예를 들어 스프링 시큐리티의
 기본 동작은 다음 헤더를 추가하는 것이다. 이 헤더는 브라우저가 도메인을 1년 동안 HSTS 호스트로 처리하도록
 지시한다(leap year가 아닌 경우 31536000초):
 
@@ -475,8 +456,8 @@ HSTS 사전 로드에 대한 자세한 내용은 [hstspreload.org](https://hstsp
 
 ## HTTP Public Key Pinning (HPKP)
 
-> 수동적인 상태를 유지하기 위해 Spring Security는 서블릿 환경에서 HPKP를 계속 지원한다. 그러나 앞에
-> 나열된 이유로 인해 HPKP는 Spring Security 팀에 의해 더 이상 권장되지 않는다.
+> 수동적인 상태를 유지하기 위해 스프링 시큐리티는 서블릿 환경에서 HPKP를 계속 지원한다. 그러나 앞에
+> 나열된 이유로 인해 HPKP는 스프링 시큐리티 팀에 의해 더 이상 권장되지 않는다.
 
 HTTP 공용 키 피닝(HPKP)은 위조된 인증서로 MITM(Man-in-the-Middle) 공격을 방지하기 위해 특정
 웹 서버와 함께 사용할 공용 키를 웹 클라이언트에 지정한다. 올바르게 사용할 경우 HPKP는 손상된 인증서에
@@ -501,7 +482,7 @@ HPKP가 더 이상 권장되지 않는 이유에 대한 자세한 내용은 "[HT
 프레임 차단 코드를 사용할 수 있다. 완벽하지는 않지만 프레임 깨짐 코드는 기존 브라우저에 대해 할 수 있는
 최선의 방법이다.
 
-클릭재킹을 해결하는 보다 현대적인 방법은 X-Frame-Options 헤더를 사용하는 것이다. 기본적으로 Spring
+클릭재킹을 해결하는 보다 현대적인 방법은 X-Frame-Options 헤더를 사용하는 것이다. 기본적으로 스프링
 Security는 다음 헤더와 함께 를 사용하여 iframe 내에서 페이지 렌더링을 비활성화한다:
 
 ```
@@ -515,7 +496,7 @@ X-Frame-Options: DENY
 일부 브라우저에는 반사된 XSS 공격을 필터링하는 기능이 내장되어 있다. 이 필터는 주요 브라우저에서 더 이상
 사용되지 않으며 현재 OWASP 권장 사항은 헤더를 명시적으로 0으로 설정하는 것이다.
 
-기본적으로 Spring Security는 다음 헤더를 사용하여 내용을 차단한다:
+기본적으로 스프링 시큐리티는 다음 헤더를 사용하여 내용을 차단한다:
 
 ```
 X-XSS-Protection: 0
@@ -592,7 +573,7 @@ Content-Security-Policy-Report-Only: script-src 'self' https://trustedscripts.ex
 Referrer Policy은 웹 응용 프로그램이 레퍼러 필드를 관리하는 데 사용할 수 있는 메커니즘으로, 사용자가
 마지막으로 방문한 페이지를 포함한다.
 
-Spring Security의 접근 방식은 서로 다른 정책을 제공하는 Referrer Policy 헤더를 사용하는 것이다:
+스프링 시큐리티의 접근 방식은 서로 다른 정책을 제공하는 Referrer Policy 헤더를 사용하는 것이다:
 
 ```
 Referrer-Policy: same-origin
@@ -647,24 +628,24 @@ Clear-Site-Data: "cache", "cookies", "storage", "executionContexts"
 
 > 서블릿 기반 응용프로그램을 구성하는 방법은 관련 섹션을 참조하자.
 
-Spring Security에는 응용 프로그램에 보다 일반적인 보안 헤더를 편리하게 추가할 수 있는 메커니즘이
+스프링 시큐리티에는 응용 프로그램에 보다 일반적인 보안 헤더를 편리하게 추가할 수 있는 메커니즘이
 있다. 그러나 사용자 정의 헤더를 추가할 수 있는 후크도 제공한다.
 
 ## HTTP [#](https://docs.spring.io/spring-security/reference/features/exploits/http.html)
 
 정적 리소스를 포함한 모든 HTTP 기반 통신은 TLS를 사용하여 보호해야 한다.
 
-기본적으로 Spring Security는 HTTP 연결을 처리하지 않으므로 HTTPS를 직접 지원하지 않는다. 그러나
+기본적으로 스프링 시큐리티는 HTTP 연결을 처리하지 않으므로 HTTPS를 직접 지원하지 않는다. 그러나
 HTTPS 사용에 도움이 되는 여러 기능을 제공한다.
 
 ## HTTPS로 리디렉션
 
-클라이언트가 HTTP를 사용하는 경우 서블릿 및 WebFlux 환경 모두에서 HTTPS로 리디렉션하도록 Spring
+클라이언트가 HTTP를 사용하는 경우 서블릿 및 WebFlux 환경 모두에서 HTTPS로 리디렉션하도록 스프링
 Security를 구성할 수 있다.
 
 ## 엄격한 운송 보안
 
-Spring Security는 엄격한 전송 보안을 지원하며 기본적으로 활성화한다.
+스프링 시큐리티는 엄격한 전송 보안을 지원하며 기본적으로 활성화한다.
 
 ## 프록시 서버 구성
 
@@ -676,9 +657,9 @@ Spring Security는 엄격한 전송 보안을 지원하며 기본적으로 활�
 이 문제를 해결하려면 [RFC 7239](https://datatracker.ietf.org/doc/html/rfc7239)를
 사용하여 로드 밸런서가 사용 중임을 지정할 수 있다. 응용프로그램이 이를 인식하도록 하려면 `X-Forwarded`
 헤더를 인식하도록 응용 프로그램 서버를 구성해야 한다. 예를 들어 `Tomcat`은 `RemoteIpValve`를
-사용하고 `Jetty`는 `ForwardedRequestCustomizer`를 사용한다. 또는 Spring 사용자는
+사용하고 `Jetty`는 `ForwardedRequestCustomizer`를 사용한다. 또는 스프링 사용자는
 `ForwardedHeaderFilter`를 사용할 수 있다.
 
-Spring Boot 사용자는 `server.use-forward-headers` 속성을 사용하여 애플리케이션을 구성할 수
-있다. 자세한 내용은 [Spring Boot 설명서](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#howto-use-tomcat-behind-a-proxy-server)를
+스프링 Boot 사용자는 `server.use-forward-headers` 속성을 사용하여 애플리케이션을 구성할 수
+있다. 자세한 내용은 [스프링 Boot 설명서](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#howto-use-tomcat-behind-a-proxy-server)를
 참조하자.
