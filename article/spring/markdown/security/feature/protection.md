@@ -337,20 +337,20 @@ HTTP 메서드를 재정의하는 작업은 필터에서 수행된다. 해당 �
 한다. 재정의는 `post`에서만 발생하므로 실제 문제가 발생할 가능성은 거의 없다. 그러나 스프링 시큐리티의
 필터 앞에 배치하는 것이 가장 좋다.
 
-## Security HTTP Response Headers [#](https://docs.spring.io/spring-security/reference/features/exploits/headers.html)
+# 보안 HTTP 응답 헤더 [#](https://docs.spring.io/spring-security/reference/features/exploits/headers.html)
 
 > 문서의 이 부분에서는 보안 HTTP 응답 헤더의 일반적인 항목에 대해 설명한다. 서블릿 및 WebFlux 기반
 > 응용 프로그램의 보안 HTTP 응답 헤더에 대한 자세한 내용은 관련 섹션을 참조하자.
 
 HTTP 응답 헤더를 여러 가지 방법으로 사용하여 웹 응용 프로그램의 보안을 강화할 수 있다. 이 섹션에서는
-스프링 시큐리티가 명시적으로 지원하는 다양한 HTTP 응답 헤더에 대해 설명한다. 필요한 경우 사용자
-정의 헤더를 제공하도록 스프링 시큐리티를 구성할 수도 있다.
+스프링 시큐리티가 명시적으로 지원하는 다양한 HTTP 응답 헤더에 대해 설명한다. 필요한 경우 사용자 정의
+헤더를 제공하도록 스프링 시큐리티를 구성할 수도 있다.
 
-## 기본 보안 헤더
+# 기본 보안 헤더
 
 > 서블릿 기반 및 웹 플럭스 기반 응용 프로그램의 기본값을 사용자 정의하는 방법은 관련 섹션을 참조하자.
 
-스프링 시큐리티는 보안 기본값을 제공하기 위해 보안 관련 HTTP 응답 헤더의 기본 집합을 제공한다.
+스프링 시큐리티는 보안 기본값을 제공하기 위해 보안 관련 HTTP 응답 헤더의 기본 설정을 제공한다.
 
 스프링 시큐리티의 기본값은 다음 헤더를 포함하는 것이다:
 
@@ -366,8 +366,8 @@ X-XSS-Protection: 0
 
 > Strict-Transport-Security는 HTTPS 요청에만 추가된다.
 
-기본값이 사용자의 필요를 충족하지 못하는 경우 이러한 기본값에서 머리글을 쉽게 제거, 수정 또는 추가할 수
-있다. 각 헤더에 대한 자세한 내용은 해당 섹션을 참조하자:
+기본값이 사용자의 필요를 충족하지 못하는 경우 이러한 기본값에서 헤더를 쉽게 제거, 수정 또는 추가할 수 있다.
+각 헤더에 대한 자세한 내용은 해당 섹션을 참조하자.:
 
 - Cache Control
 - Content Type Options
@@ -375,14 +375,14 @@ X-XSS-Protection: 0
 - X-Frame-Options
 - X-XSS-Protection
 
-## Cache Control
+# Cache Control
 
 > 서블릿 및 웹 플럭스 기반 응용 프로그램의 기본값을 사용자 지정하는 방법은 관련 섹션을 참조하자.
 
 스프링 시큐리티의 기본값은 캐시를 사용하지 않도록 설정하여 사용자의 콘텐츠를 보호하는 것이다.
 
 사용자가 중요한 정보를 보기 위해 인증한 다음 로그아웃하는 경우 악의적인 사용자가 중요한 정보를 보기 위해
-뒤로 단추를 클릭하지 못하도록 한다. 기본적으로 전송되는 캐시 제어 헤더는 다음과 같다:
+뒤로가기 버튼을 클릭하지 못하도록 한다. 기본적으로 전송되는 캐시 제어 헤더는 다음과 같다:
 
 ```
 Cache-Control: no-cache, no-store, max-age=0, must-revalidate
@@ -390,28 +390,28 @@ Pragma: no-cache
 Expires: 0
 ```
 
-기본적으로 보안을 유지하기 위해 스프링 시큐리티는 이러한 헤더를 기본적으로 추가한다. 그러나 응용
-프로그램이 자체 캐시 제어 헤더를 제공하는 경우 스프링 시큐리티는 방해가 되지 않는다. 이렇게 하면
-응용 프로그램에서 정적 리소스(예: CSS 및 JavaScript)를 캐시할 수 있다.
+기본적으로 보안을 유지하기 위해 스프링 시큐리티는 이러한 헤더를 기본적으로 추가한다. 그러나 응용 프로그램이
+자체 캐시 제어 헤더를 제공하는 경우 스프링 시큐리티는 방해가 되지 않는다. 이렇게 하면 응용 프로그램에서
+정적 리소스(예: CSS 및 JavaScript)를 캐시할 수 있다.
 
-## Content Type Options
+# Content Type Options
 
 > 서블릿 및 웹 플럭스 기반 응용 프로그램의 기본값을 사용자 지정하는 방법은 관련 섹션을 참조하자.
 
-과거에는 Internet Explorer를 포함한 브라우저가 콘텐츠 스니핑을 사용하여 요청의 콘텐츠 유형을 추측하려고
-했다. 이를 통해 브라우저는 콘텐츠 유형을 지정하지 않은 리소스의 콘텐츠 유형을 추측하여 사용자 환경을
-개선할 수 있다. 예를 들어 브라우저에서 콘텐츠 유형이 지정되지 않은 JavaScript 파일이 발견된 경우
-콘텐츠 유형을 추측하여 실행할 수 있다.
+과거에는 인터넷 익스플로러를 포함한 브라우저가 콘텐츠 스니핑을 사용하여 요청의 콘텐츠 유형을 추측하려고 했다.
+이를 통해 브라우저는 콘텐츠 유형을 지정하지 않은 리소스의 콘텐츠 유형을 추측하여 사용자 환경을 개선할 수
+있다. 예를 들어 브라우저에서 콘텐츠 유형이 지정되지 않은 자바스크립트 파일이 발견된 경우 콘텐츠 유형을
+추측하여 실행할 수 있다.
 
-> 내용 업로드를 허용할 때 수행해야 하는 추가 작업은 여러 가지가 있다(예: 문서를 별도의 도메인에 표시하거나,
-> 내용 유형 헤더가 설정되었는지 확인하거나, 문서를 검사하거나, 기타 작업). 그러나 이러한 조치는 스프링
-> Security에서 제공하는 범위를 벗어난다. 또한 내용 스니핑을 사용하지 않도록 설정할 때 내용이 제대로
-> 작동하려면 내용 유형을 지정해야 한다.
+> 내용 업로드를 허용할 때 수행해야 하는 추가 작업은 여러 가지가 있다(예: 문서를 별도의 도메인에
+> 표시하거나, 내용 유형 헤더가 설정되었는지 확인하거나, 문서를 검사하거나, 기타 작업). 그러나 이러한
+> 조치는 스프링 시큐리티에서 제공하는 범위를 벗어난다. 또한 내용 스니핑을 사용하지 않도록 설정할 때 내용이
+> 제대로 작동하려면 내용 유형을 지정해야 한다.
 
 콘텐츠 스니핑의 문제는 이를 통해 악의적인 사용자가 다중 글로트(즉, 여러 콘텐츠 유형으로 유효한 파일)를
 사용하여 XSS 공격을 수행할 수 있다는 것이다. 예를 들어, 일부 사이트에서는 사용자가 유효한 포스트스크립트
-문서를 웹 사이트에 제출하고 볼 수 있다. 악의적인 사용자는 유효한 JavaScript 파일이기도 한
-포스트스크립트 문서를 만들고 이를 사용하여 XSS 공격을 수행할 수 있다.
+문서를 웹 사이트에 제출하고 볼 수 있다. 악의적인 사용자는 유효한 자바스크립트 파일이기도 한 포스트스크립트
+문서를 만들고 이를 사용하여 XSS 공격을 수행할 수 있다.
 
 기본적으로 스프링 시큐리티는 HTTP 응답에 다음 헤더를 추가하여 내용 스니핑을 비활성화한다:
 
@@ -419,7 +419,7 @@ Expires: 0
 X-Content-Type-Options: nosniff
 ```
 
-## HTTP Strict Transport Security (HSTS)
+# HTTP Strict Transport Security (HSTS)
 
 > 서블릿 및 웹 플럭스 기반 응용프로그램의 기본값을 사용자 지정하는 방법은 관련 섹션을 참조하자.
 
@@ -439,8 +439,8 @@ X-Content-Type-Options: nosniff
 > 서명한 CA를 신뢰해야 한다(SSL 인증서뿐만 아니라).
 
 사이트를 HSTS 호스트로 표시하는 한 가지 방법은 호스트를 브라우저에 미리 로드하는 것이다. 다른 방법은
-응답에 `Strict-Transport-Security` 헤더를 추가하는 것이다. 예를 들어 스프링 시큐리티의
-기본 동작은 다음 헤더를 추가하는 것이다. 이 헤더는 브라우저가 도메인을 1년 동안 HSTS 호스트로 처리하도록
+응답에 `Strict-Transport-Security` 헤더를 추가하는 것이다. 예를 들어 스프링 시큐리티의 기본
+동작은 다음 헤더를 추가하는 것이다. 이 헤더는 브라우저가 도메인을 1년 동안 HSTS 호스트로 처리하도록
 지시한다(leap year가 아닌 경우 31536000초):
 
 ```
@@ -454,7 +454,7 @@ HSTS 도메인으로 처리하도록 지시한다.
 HSTS 사전 로드에 대한 자세한 내용은 [hstspreload.org](https://hstspreload.org/)를
 참조하자.
 
-## HTTP Public Key Pinning (HPKP)
+# HTTP Public Key Pinning (HPKP)
 
 > 수동적인 상태를 유지하기 위해 스프링 시큐리티는 서블릿 환경에서 HPKP를 계속 지원한다. 그러나 앞에
 > 나열된 이유로 인해 HPKP는 스프링 시큐리티 팀에 의해 더 이상 권장되지 않는다.
@@ -467,7 +467,7 @@ HTTP 공용 키 피닝(HPKP)은 위조된 인증서로 MITM(Man-in-the-Middle) �
 HPKP가 더 이상 권장되지 않는 이유에 대한 자세한 내용은 "[HTTP 공용 키 피닝이 중단되었습니까?](https://blog.qualys.com/product-tech/2016/09/06/is-http-public-key-pinning-dead)"와
 "[HPKP 포기합니다](https://scotthelme.co.uk/im-giving-up-on-hpkp/)"를 참조하자.
 
-## X-Frame-Options
+# X-Frame-Options
 
 > 서블릿 및 웹 플럭스 기반 응용프로그램의 기본값을 사용자 정의하는 방법은 관련 섹션을 참조하자.
 
@@ -483,18 +483,19 @@ HPKP가 더 이상 권장되지 않는 이유에 대한 자세한 내용은 "[HT
 최선의 방법이다.
 
 클릭재킹을 해결하는 보다 현대적인 방법은 X-Frame-Options 헤더를 사용하는 것이다. 기본적으로 스프링
-Security는 다음 헤더와 함께 를 사용하여 iframe 내에서 페이지 렌더링을 비활성화한다:
+시큐리티는 다음 헤더를 사용하여 iframe 내에서 페이지 렌더링을 비활성화한다:
 
 ```
 X-Frame-Options: DENY
 ```
 
-## X-XSS-Protection
+# X-XSS-Protection
 
 > 서블릿 및 웹 플럭스 기반 응용프로그램의 기본값을 사용자 정의하는 방법은 관련 섹션을 참조하자.
 
 일부 브라우저에는 반사된 XSS 공격을 필터링하는 기능이 내장되어 있다. 이 필터는 주요 브라우저에서 더 이상
-사용되지 않으며 현재 OWASP 권장 사항은 헤더를 명시적으로 0으로 설정하는 것이다.
+사용되지 않으며 현재 [OWASP 권장 사항](https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html#x-xss-protection)은
+헤더를 명시적으로 0으로 설정하는 것이다.
 
 기본적으로 스프링 시큐리티는 다음 헤더를 사용하여 내용을 차단한다:
 
@@ -502,14 +503,14 @@ X-Frame-Options: DENY
 X-XSS-Protection: 0
 ```
 
-## Content Security Policy (CSP)
+# Content Security Policy (CSP)
 
 > 서블릿 및 웹 플럭스 기반 응용프로그램을 모두 구성하는 방법은 관련 섹션을 참조하자.
 
-CSP(콘텐츠 보안 정책)는 웹 응용 프로그램이 XSS(사이트 간 스크립팅)와 같은 콘텐츠 주입 취약성을 완화하기
-위해 사용할 수 있는 메커니즘이다. CSP는 웹 응용 프로그램 작성자가 웹 응용 프로그램이 리소스를 로드할
-것으로 예상되는 소스를 선언하고 최종적으로 클라이언트(사용자 에이전트)에게 알릴 수 있는 기능을 제공하는
-선언 정책이다.
+[CSP(콘텐츠 보안 정책)](https://www.w3.org/TR/CSP2/)는 웹 응용 프로그램이 XSS(사이트 간
+스크립팅)와 같은 콘텐츠 주입 취약성을 완화하기 위해 사용할 수 있는 메커니즘이다. CSP는 웹 응용 프로그램
+작성자가 웹 응용 프로그램이 리소스를 로드할 것으로 예상되는 소스를 선언하고 최종적으로 클라이언트(사용자
+에이전트)에게 알릴 수 있는 기능을 제공하는 선언 정책이다.
 
 내용 보안 정책이 일부 내용 주입 취약성을 해결하기 위한 것은 아니다. 대신 CSP를 사용하여 콘텐츠 주입
 공격으로 인한 피해를 줄일 수 있다. 첫 번째 방어선으로 웹 응용 프로그램 작성자는 입력 내용을 검증하고
@@ -517,8 +518,8 @@ CSP(콘텐츠 보안 정책)는 웹 응용 프로그램이 XSS(사이트 간 스
 
 웹 응용 프로그램은 응답에 다음 HTTP 헤더 중 하나를 포함하여 CSP를 사용할 수 있다:
 
-- 콘텐츠-보안-정책
-- 내용-보안-정책-보고서 전용
+- `Content-Security-Policy`
+- `Content-Security-Policy-Report-Only`
 
 이러한 각 헤더는 클라이언트에 보안 정책을 전달하는 메커니즘으로 사용된다. 보안 정책에는 특정 리소스 표현에
 대한 제한을 선언하는 일련의 보안 정책 지시자가 포함된다.
@@ -556,21 +557,21 @@ Content-Security-Policy-Report-Only: script-src 'self' https://trustedscripts.ex
 ```
 
 사이트가 `evil.example.com`에서 스크립트를 로드하려고 시도하여 이 정책을 위반하는 경우 사용자
-에이전트는 `report-uri` 지시에 의해 지정된 선언된 URL로 위반 보고서를 보내지만 위반 리소스가 로드되도록
-허용한다.
+에이전트는 `report-uri` 지시에 의해 지정된 선언된 URL로 위반 보고서를 보내지만 위반 리소스가
+로드되도록 허용한다.
 
-웹 응용프로그램에 내용 보안 정책을 적용하는 것은 종종 간단한 작업이 아니다. 다음 리소스는 사이트에 대한
+웹 응용 프로그램에 내용 보안 정책을 적용하는 것은 종종 간단한 작업이 아니다. 다음 리소스는 사이트에 대한
 효과적인 보안 정책을 개발하는 데 도움이 될 수 있다:
 
 - [An Introduction to Content Security Policy](https://web.dev/csp/)
 - [CSP Guide - Mozilla Developer Network](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP)
 - [W3C Candidate Recommendation](https://www.w3.org/TR/CSP2/)
 
-## Referrer Policy
+# Referrer Policy
 
 > 서블릿 및 웹 플럭스 기반 응용프로그램을 모두 구성하는 방법은 관련 섹션을 참조하자.
 
-Referrer Policy은 웹 응용 프로그램이 레퍼러 필드를 관리하는 데 사용할 수 있는 메커니즘으로, 사용자가
+Referrer Policy는 웹 응용 프로그램이 레퍼러 필드를 관리하는 데 사용할 수 있는 메커니즘으로, 사용자가
 마지막으로 방문한 페이지를 포함한다.
 
 스프링 시큐리티의 접근 방식은 서로 다른 정책을 제공하는 Referrer Policy 헤더를 사용하는 것이다:
@@ -581,7 +582,7 @@ Referrer-Policy: same-origin
 
 Referrer-Policy 응답 헤더는 대상이 사용자가 이전에 있었던 소스를 알도록 브라우저에 지시다.
 
-## Feature Policy
+# Feature Policy
 
 > 서블릿 및 웹 플럭스 기반 응용프로그램을 모두 구성하는 방법은 관련 섹션을 참조하자.
 
@@ -596,7 +597,7 @@ Feature-Policy: geolocation 'self'
 집합을 선택할 수 있다. 이러한 정책은 사이트에서 액세스할 수 있는 API를 제한하거나 특정 기능에 대한
 브라우저의 기본 동작을 수정한다.
 
-## Permissions Policy
+# Permissions Policy
 
 > 서블릿 및 웹 플럭스 기반 응용프로그램을 모두 구성하는 방법은 관련 섹션을 참조하자.
 
@@ -611,7 +612,7 @@ Permissions-Policy: geolocation=(self)
 집합을 선택할 수 있다. 이러한 정책은 사이트에서 액세스할 수 있는 API를 제한하거나 특정 기능에 대한
 브라우저의 기본 동작을 수정한다.
 
-## Clear Site Data
+# Clear Site Data
 
 > 서블릿 및 웹 플럭스 기반 응용프로그램을 모두 구성하는 방법은 관련 섹션을 참조하자.
 
@@ -624,30 +625,30 @@ Clear-Site-Data: "cache", "cookies", "storage", "executionContexts"
 
 로그아웃 시 수행할 수 있는 정리 작업이다.
 
-## Custom Headers
+# Custom Headers
 
 > 서블릿 기반 응용프로그램을 구성하는 방법은 관련 섹션을 참조하자.
 
-스프링 시큐리티에는 응용 프로그램에 보다 일반적인 보안 헤더를 편리하게 추가할 수 있는 메커니즘이
-있다. 그러나 사용자 정의 헤더를 추가할 수 있는 후크도 제공한다.
+스프링 시큐리티에는 응용 프로그램에 보다 일반적인 보안 헤더를 편리하게 추가할 수 있는 메커니즘이 있다.
+그러나 사용자 정의 헤더를 추가할 수 있는 후크도 제공한다.
 
-## HTTP [#](https://docs.spring.io/spring-security/reference/features/exploits/http.html)
+# HTTP [#](https://docs.spring.io/spring-security/reference/features/exploits/http.html)
 
 정적 리소스를 포함한 모든 HTTP 기반 통신은 TLS를 사용하여 보호해야 한다.
 
-기본적으로 스프링 시큐리티는 HTTP 연결을 처리하지 않으므로 HTTPS를 직접 지원하지 않는다. 그러나
-HTTPS 사용에 도움이 되는 여러 기능을 제공한다.
+기본적으로 스프링 시큐리티는 HTTP 연결을 처리하지 않으므로 HTTPS를 직접 지원하지 않는다. 그러나 HTTPS
+사용에 도움이 되는 여러 기능을 제공한다.
 
-## HTTPS로 리디렉션
+# HTTPS로 리디렉션
 
 클라이언트가 HTTP를 사용하는 경우 서블릿 및 WebFlux 환경 모두에서 HTTPS로 리디렉션하도록 스프링
-Security를 구성할 수 있다.
+시큐리티를 구성할 수 있다.
 
-## 엄격한 운송 보안
+# 엄격한 운송 보안
 
 스프링 시큐리티는 엄격한 전송 보안을 지원하며 기본적으로 활성화한다.
 
-## 프록시 서버 구성
+# 프록시 서버 구성
 
 프록시 서버를 사용할 때는 응용 프로그램을 올바르게 구성했는지 확인하는 것이 중요하다. 예를 들어 대부분의
 애플리케이션에는 `192.168.1:8080`에 있는 애플리케이션 서버로 요청을 전달하여 `example.com/`에
@@ -655,11 +656,11 @@ Security를 구성할 수 있다.
 알 수 없으며 클라이언트가 요청한 `192.168.1:8080`과 동일하게 요청을 처리한다.
 
 이 문제를 해결하려면 [RFC 7239](https://datatracker.ietf.org/doc/html/rfc7239)를
-사용하여 로드 밸런서가 사용 중임을 지정할 수 있다. 응용프로그램이 이를 인식하도록 하려면 `X-Forwarded`
-헤더를 인식하도록 응용 프로그램 서버를 구성해야 한다. 예를 들어 `Tomcat`은 `RemoteIpValve`를
-사용하고 `Jetty`는 `ForwardedRequestCustomizer`를 사용한다. 또는 스프링 사용자는
-`ForwardedHeaderFilter`를 사용할 수 있다.
+사용하여 로드 밸런서가 사용 중임을 지정할 수 있다. 응용 프로그램이 이를 인식하도록 하려면
+`X-Forwarded` 헤더를 인식하도록 응용 프로그램 서버를 구성해야 한다. 예를 들어 `Tomcat`은
+`RemoteIpValve`를 사용하고 `Jetty`는 `ForwardedRequestCustomizer`를 사용한다. 또는
+스프링 사용자는 `ForwardedHeaderFilter`를 사용할 수 있다.
 
-스프링 Boot 사용자는 `server.use-forward-headers` 속성을 사용하여 애플리케이션을 구성할 수
-있다. 자세한 내용은 [스프링 Boot 설명서](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#howto-use-tomcat-behind-a-proxy-server)를
+스프링 부트 사용자는 `server.use-forward-headers` 속성을 사용하여 애플리케이션을 구성할 수 있다.
+자세한 내용은 [스프링 Boot 설명서](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#howto-use-tomcat-behind-a-proxy-server)를
 참조하자.

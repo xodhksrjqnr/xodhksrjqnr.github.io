@@ -27,44 +27,35 @@
 
 - 애플리케이션의 빠르고 일관된 제공이 필요한 경우 (CI/CD 워크플로우에 적합)
 - 신속한 구축 및 확장
-- 동일한 하드웨어에서 더 많은 워크로드 실행 (고밀도 환경과 적은 리소스로 더 많은 작업을 수행해야 하는
-  중소규모 구현에 적합)
+- 동일한 하드웨어에서 더 많은 워크로드 실행 (고밀도 환경과 적은 리소스로 더 많은 작업을 수행해야 하는 중소규모 구현에 적합)
 
 ## Docker 아키텍쳐
 
-`Docker`는 `클라이언트-서버` 아키텍쳐이며 Docker 클라이언트는 Docker 데몬과 `REST API`를
-사용하여 통신한다.
+`Docker`는 `클라이언트-서버` 아키텍쳐이며 Docker 클라이언트는 Docker 데몬과 `REST API`를 사용하여 통신한다.
 
 ![](https://docs.docker.com/assets/images/architecture.svg)
 
 ### Docker Daemon (Dockerd)
 
-Docker API 요청을 수신하고 Docker 개체(이미지, 컨테이너, 네트워크 및 볼륨)를 관리한다. 또한 데몬은
-다른 데몬과 통신하여 Docker 서비스를 관리할 수 있다.
+Docker API 요청을 수신하고 Docker 개체(이미지, 컨테이너, 네트워크 및 볼륨)를 관리한다. 또한 데몬은 다른 데몬과 통신하여 Docker 서비스를 관리할 수 있다.
 
 ### Docker Client (Docker)
 
-`docker run`과 같은 명령을 Docker API를 사용해 Dockerd로 전달한다. 둘 이상의 Dockerd와 통신이
-가능하다.
+`docker run`과 같은 명령을 Docker API를 사용해 Dockerd로 전달한다. 둘 이상의 Dockerd와 통신이 가능하다.
 
 ### Docker Desktop
 
-Mac, Windows 또는 Linux 환경을 위한 설치하기 쉬운 응용 프로그램으로, 컨테이너형 응용 프로그램 및
-마이크로 서비스를 구축하고 공유할 수 있다.
+Mac, Windows 또는 Linux 환경을 위한 설치하기 쉬운 응용 프로그램으로, 컨테이너형 응용 프로그램 및 마이크로 서비스를 구축하고 공유할 수 있다.
 
 ### Docker Registries
 
-Docker 레지스트리는 Docker 이미지를 저장한다. Docker Hub는 누구나 사용할 수 있는 공용
-레지스트리이며 Docker는 기본적으로 Docker Hub에서 이미지를 찾도록 구성되어 있다.
+Docker 레지스트리는 Docker 이미지를 저장한다. Docker Hub는 누구나 사용할 수 있는 공용 레지스트리이며 Docker는 기본적으로 Docker Hub에서 이미지를 찾도록 구성되어 있다.
 
 command : `docker run`, `docker pull`, `docker push`
 
 ### Images
 
-이미지는 Docker 컨테이너를 만드는 방법이 설명된 읽기 전용 템플릿이다. 이미지를 직접 만들거나 레지스트리에
-게시된 이미지를 사용할 수 있으며, 이미지 생성시 이미 존재하는 이미지를 기반으로 사용할 수도 있다. 고유한
-이미지 빌드 시 `Dockerfile`이 필요하며 `Dockerfile` 수정 시 변경된 부분만 재구성되기 때문에
-이미지를 매우 가볍고, 작고, 빠르게 만들 수 있다.
+이미지는 Docker 컨테이너를 만드는 방법이 설명된 읽기 전용 템플릿이다. 이미지를 직접 만들거나 레지스트리에 게시된 이미지를 사용할 수 있으며, 이미지 생성시 이미 존재하는 이미지를 기반으로 사용할 수도 있다. 고유한 이미지 빌드 시 `Dockerfile`이 필요하며 `Dockerfile` 수정 시 변경된 부분만 재구성되기 때문에 이미지를 매우 가볍고, 작고, 빠르게 만들 수 있다.
 
 ### Containers
 

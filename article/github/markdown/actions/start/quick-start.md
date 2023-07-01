@@ -2,11 +2,9 @@
 
 ## 소개
 
-GitHub Actions 워크플로우를 만들고 실행하려면 GitHub repository만 있으면 된다. 이 안내서에서는
-GitHub Actions의 몇 가지 필수 기능을 보여주는 워크플로우를 추가한다.
+GitHub Actions 워크플로우를 만들고 실행하려면 GitHub repository만 있으면 된다. 이 안내서에서는 GitHub Actions의 몇 가지 필수 기능을 보여주는 워크플로우를 추가한다.
 
-다음 예제에서는 GitHub Actions 작업이 자동으로 트리거되는 방법, 작업이 실행되는 위치 및 저장소의 코드와
-상호 작용하는 방법을 보여 준다.
+다음 예제에서는 GitHub Actions 작업이 자동으로 트리거되는 방법, 작업이 실행되는 위치 및 저장소의 코드와 상호 작용하는 방법을 보여 준다.
 
 ## 첫 번째 워크플로우 만들기
 
@@ -36,8 +34,7 @@ jobs:
       - run: echo "🍏 This job's status is ${{ job.status }}."
 ```
 
-4. 페이지 하단으로 스크롤하여 이 커밋에 대한 새 분기 만들기를 선택하고 꺼내기 요청을 시작한다. 그런 다음
-꺼내기 요청을 만들려면 새 파일 제안을 클릭한다.
+4. 페이지 하단으로 스크롤하여 이 커밋에 대한 새 분기 만들기를 선택하고 꺼내기 요청을 시작한다. 그런 다음 꺼내기 요청을 만들려면 새 파일 제안을 클릭한다.
 
 ![](https://docs.github.com/assets/cb-67313/mw-1440/images/help/repository/actions-quickstart-commit-new-file.webp)
 
@@ -55,8 +52,7 @@ jobs:
 
 ![](https://docs.github.com/assets/cb-64036/mw-1440/images/help/repository/actions-quickstart-workflow-sidebar.webp)
 
-4. 워크플로우 실행 목록에서 보려는 실행 이름을 클릭한다. 이 예에서는 "`USERNAME`이 GitHub Actions를
-테스트하고 있다."
+4. 워크플로우 실행 목록에서 보려는 실행 이름을 클릭한다. 이 예에서는 "`USERNAME`이 GitHub Actions를 테스트하고 있다."
 
 5. 워크플로 실행 페이지의 왼쪽 사이드바에 있는 Jobs에서 `Explore-GitHub-Actions` 작업을 누른다.
 
@@ -70,15 +66,10 @@ jobs:
 
 ![](https://docs.github.com/assets/cb-53979/mw-1440/images/help/repository/actions-quickstart-log-detail.webp)
 
-방금 추가한 예제 워크플로우는 코드가 분기에 푸시될 때마다 트리거되며 GitHub Actions가 저장소의 내용과
-함께 작동하는 방법을 보여준다. 자세한 자습서는 "[GitHub 수행 이해](https://docs.github.com/en/github-ae@latest/actions/learn-github-actions/understanding-github-actions)"를
-참조하자.
+방금 추가한 예제 워크플로우는 코드가 분기에 푸시될 때마다 트리거되며 GitHub Actions가 저장소의 내용과 함께 작동하는 방법을 보여준다. 자세한 자습서는 "[GitHub 수행 이해](https://docs.github.com/en/github-ae@latest/actions/learn-github-actions/understanding-github-actions)"를 참조하자.
 
 ## 추가 시작 워크플로우
 
-GitHub은 사용자가 사용자 정의하여 자체적인 연속 통합 워크플로우를 만들 수 있는 사전 구성된 시작
-워크플로우를 제공한다. GitHub AE는 코드를 분석하여 저장소에 유용할 수 있는 CI 시작 워크플로우를
-보여준다. 예를 들어 저장소에 Node.js 코드가 있는 경우 Node.js 프로젝트에 대한 제안 사항이 표시된다.
-시작 워크플로우를 사용하여 사용자 정의 워크플로우를 구축하거나 그대로 사용할 수 있다.
+GitHub은 사용자가 사용자 정의하여 자체적인 연속 통합 워크플로우를 만들 수 있는 사전 구성된 시작 워크플로우를 제공한다. GitHub AE는 코드를 분석하여 저장소에 유용할 수 있는 CI 시작 워크플로우를 보여준다. 예를 들어 저장소에 Node.js 코드가 있는 경우 Node.js 프로젝트에 대한 제안 사항이 표시된다. 시작 워크플로우를 사용하여 사용자 정의 워크플로우를 구축하거나 그대로 사용할 수 있다.
 
 기업의 actions/starter-workflows 저장소에서 시작 워크플로우의 전체 목록을 찾아볼 수 있습니다.

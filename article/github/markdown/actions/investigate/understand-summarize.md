@@ -2,17 +2,13 @@
 
 ## 개요
 
-GitHub Actions는 CI/CD(Continuous Integration and Continuous Delivery) 플랫폼이다.
-CI/CD란 `애플리케이션 개발 단계를 자동화하여 애플리케이션을 더욱 짧은 주기로 고객에게 제공하는 방법`으로
-GitHub Actions는 workflow를 이용해 이를 수행한다.
+GitHub Actions는 CI/CD(Continuous Integration and Continuous Delivery) 플랫폼이다. CI/CD란 `애플리케이션 개발 단계를 자동화하여 애플리케이션을 더욱 짧은 주기로 고객에게 제공하는 방법`으로 GitHub Actions는 workflow를 이용해 이를 수행한다.
 
-엔터프라이즈용 GitHub Actions는 [여기](https://docs.github.com/ko/github-ae@latest/admin/github-actions/getting-started-with-github-actions-for-your-enterprise/introducing-github-actions-to-your-enterprise)서
-확인하자.
+엔터프라이즈용 GitHub Actions는 [여기](https://docs.github.com/ko/github-ae@latest/admin/github-actions/getting-started-with-github-actions-for-your-enterprise/introducing-github-actions-to-your-enterprise)서 확인하자.
 
 ## 구성 요소
 
-`pull request` 등의 이벤트가 리포지토리에서 발생할 때 트리거가 되도록 workflow를 구성할 수 있다.
-workflow와 workflow를 이루는 구성 요소에 대해 자세히 알아보자.
+`pull request` 등의 이벤트가 리포지토리에서 발생할 때 트리거가 되도록 workflow를 구성할 수 있다. workflow와 workflow를 이루는 구성 요소에 대해 자세히 알아보자.
 
 ![](https://docs.github.com/assets/cb-25535/mw-1440/images/help/actions/overview-actions-simple.webp)
 
@@ -116,9 +112,7 @@ jobs:
 
 ### workflow 파일 시각화
 
-위에서 적성한 workflow 파일을 다이어그램으로 변화하면 다음과 같다. `uses:`에서 사용한 `action`에
-대해 더 자세히 알고싶다면 [여기](https://docs.github.com/ko/github-ae@latest/actions/learn-github-actions/finding-and-customizing-actions)서
-확인하자.
+위에서 적성한 workflow 파일을 다이어그램으로 변화하면 다음과 같다. `uses:`에서 사용한 `action`에 대해 더 자세히 알고싶다면 [여기](https://docs.github.com/ko/github-ae@latest/actions/learn-github-actions/finding-and-customizing-actions)서 확인하자.
 
 ![](https://docs.github.com/assets/cb-33882/mw-1440/images/help/actions/overview-actions-event.webp)
 
