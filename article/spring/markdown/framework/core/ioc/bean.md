@@ -27,13 +27,15 @@
 
 > 컨테이너가 autowiring 및 기타 검사 단계 중에 올바르게 추론할 수 있도록 빈 메타데이터 및 수동으로 제공된 싱글톤 인스턴스를 가능한 한 빨리 등록해야 한다. 기존 메타데이터 및 기존 싱글톤 인스턴스를 어느 정도 재정의하는 것은 지원되지만, 런타임(팩토리에 대한 실시간 및 동시 접근)에 새 빈을 등록하는 것은 공식적으로 지원되지 않으며, 동시 액세스 예외나 빈 컨테이너의 상태가 일관되지 않는 상태로 이어질 수 있다.
 
+<br>
+
 # 빈 이름 짓기
 
 모든 빈에는 하나 이상의 식별자가 있다. 이러한 식별자는 빈을 호스트하는 컨테이너 내에서 고유해야 한다. 빈은 보통 하나의 식별자만 가지고 있다. 그러나 둘 이상이 필요한 경우 추가 항목을 별칭으로 간주할 수 있다.
 
 XML 기반 구성 메타데이터에서는 `id` 특성, `name` 특성 또는 둘 다를 사용하여 빈 식별자를 지정한다. `id` 속성을 사용하면 `id`를 하나만 지정할 수 있다. 일반적으로 이러한 이름은 영숫자('myBean', 'someService' 등)이지만 특수 문자도 포함할 수 있다. 빈에 대한 다른 별칭을 도입하려는 경우 `name` 속성에서 쉼표(`,`), 세미콜론(`;`) 또는 공백으로 구분하여 지정할 수도 있다. `id` 특성은 `xsd:string` 유형으로 정의되지만 빈 `id` 고유성은 XML 구문 분석기에 의해 적용되지 않는다.
 
-빈을 위한 `name`이나 `id`를 제공할 필요는 없다. `name` 또는 `id`를 명시적으로 제공하지 않으면 컨테이너는 해당 빈의 고유한 이름을 생성한다. 그러나 `ref` 요소 또는 서비스 로케이터 스타일 조회를 통해 빈을 이름으로 참조하려면 이름을 입력해야 한다. 이름을 제공하지 않는 동기는 내부 빈즈 사용 및 autowiring 공동작업자와 관련이 있다.
+빈을 위한 `name`이나 `id`를 제공할 필요는 없다. `name` 또는 `id`를 명시적으로 제공하지 않으면 컨테이너는 해당 빈의 고유한 이름을 생성한다. 그러나 `ref` 요소 또는 서비스 로케이터 스타일 조회를 통해 빈을 이름으로 참조하려면 이름을 입력해야 한다. 이름을 제공하지 않는 동기는 [내부 빈즈](https://docs.spring.io/spring-framework/reference/core/beans/dependencies/factory-properties-detailed.html#beans-inner-beans) 사용 및 [autowiring 공동작업자](https://docs.spring.io/spring-framework/reference/core/beans/dependencies/factory-autowire.html)와 관련이 있다.
 
 > ## 빈 명명 규칙
 > 
@@ -66,6 +68,8 @@ XML 기반 구성 메타데이터에서는 `id` 특성, `name` 특성 또는 둘
 >
 > Java 구성을 사용하는 경우 `@Bean` 주석을 사용하여 별칭을 제공할 수 있다. 자세한 내용은 [`@Bean` 주석 사용](https://docs.spring.io/spring-framework/reference/core/beans/java/bean-annotation.html)을 참조하자.
 
+<br>
+
 # 빈 인스턴스화
 
 빈 정의는 기본적으로 하나 이상의 개체를 만들기 위한 방법이다. 컨테이너는 요청 시 명명된 빈의 레시피를 살펴보고 해당 빈 정의에 의해 캡슐화된 구성 메타데이터를 사용하여 실제 개체를 생성(또는 획득)한다.
@@ -84,6 +88,8 @@ XML 기반 구성 메타데이터를 사용하는 경우 `<bean/>` 요소의 `cl
 > 있다. 따라서 빈 정의에서 `class` 속성의 값은 `com.example.SomeThing$OtherThing` 또는
 > `com.example.SomeThing.OtherThing`이다.
 
+<br>
+
 # 생성자를 사용한 인스턴스화
 
 생성자 접근 방식으로 빈을 작성하면 스프링에서 모든 일반 클래스를 사용할 수 있으며 호환된다. 즉, 개발 중인 클래스는 특정 인터페이스를 구현하거나 특정 방식으로 코딩할 필요가 없다. 단순히 빈 클래스를 지정하는 것으로 충분하다. 그러나 특정 빈에 사용하는 IoC 유형에 따라 기본(빈) 생성자가 필요할 수 있다.
@@ -98,7 +104,9 @@ XML 기반 구성 메타데이터를 사용하여 다음과 같이 빈 클래스
 <bean name="anotherExample" class="examples.ExampleBeanTwo"/>
 ```
 
-생성자에 인수를 제공하고(필요한 경우) 개체가 생성된 후 개체 인스턴스 속성을 설정하는 메커니즘에 대한 자세한 내용은 종속성 주입을 참조하자.
+생성자에 인수를 제공하고(필요한 경우) 개체가 생성된 후 개체 인스턴스 속성을 설정하는 메커니즘에 대한 자세한 내용은 [의존성 주입](https://docs.spring.io/spring-framework/reference/core/beans/dependencies/factory-collaborators.html)을 참조하자.
+
+<br>
 
 # 정적 팩토리 메서드를 사용한 인스턴스화
 
@@ -125,11 +133,13 @@ public class ClientService {
 }
 ```
 
-리턴 시 메서드에 인수(선택 사항)를 제공하고 개체가 리턴된 후 개체 인스턴스 속성을 설정하는 메커니즘에 대한 자세한 내용은 종속성 및 구성을 참조하자.
+리턴 시 메서드에 인수(선택 사항)를 제공하고 개체가 리턴된 후 개체 인스턴스 속성을 설정하는 메커니즘에 대한 자세한 내용은 [의존성 및 구성](https://docs.spring.io/spring-framework/reference/core/beans/dependencies/factory-properties-detailed.html)을 참조하자.
 
-# Instance Factory 메서드를 사용한 인스턴스화
+<br>
 
-정적 팩토리 방법을 통한 인스턴스화와 마찬가지로, 인스턴스 팩토리 방법을 통한 인스턴스화는 컨테이너에서 기존 빈의 정적이 아닌 메서드를 호출하여 새 빈을 생성한다. 이 메커니즘을 사용하려면 `class` 특성을 비워두고 `factory-bean` 특성에서 개체를 생성하기 위해 호출할 인스턴스 메서드가 포함된 현재(또는 상위 또는 상위) 컨테이너의 빈 이름을 지정한다. `factory-method` 특성을 사용하여 출고 시 메서드의 이름을 설정한다. 다음 예는 이러한 빈을 구성하는 방법을 보여준다:
+# 인스턴스 팩토리 메서드를 사용한 인스턴스화
+
+정적 팩토리 메서드를 통한 인스턴스화와 마찬가지로, 인스턴스 팩토리 메서드를 통한 인스턴스화는 컨테이너에서 기존 빈의 정적이 아닌 메서드를 호출하여 새 빈을 생성한다. 이 메커니즘을 사용하려면 `class` 특성을 비워두고 `factory-bean` 특성에서 개체를 생성하기 위해 호출할 인스턴스 메서드가 포함된 현재(또는 상위) 컨테이너의 빈 이름을 지정한다. `factory-method` 특성을 사용하여 리턴 시 메서드의 이름을 설정한다. 다음 예는 이러한 빈을 구성하는 방법을 보여준다:
 
 ```xml
 <!-- the factory bean, which contains a method called createInstance() -->
@@ -191,9 +201,11 @@ public class DefaultServiceLocator {
 }
 ```
 
-이 접근 방식은 의존성 주입(DI)을 통해 팩토리 자체를 관리하고 구성할 수 있음을 보여준다. 자세한 내용은 종속성 및 구성을 참조하자.
+이 접근 방식은 의존성 주입(DI)을 통해 팩토리 자체를 관리하고 구성할 수 있음을 보여준다. 자세한 내용은 [의존성 및 구성](https://docs.spring.io/spring-framework/reference/core/beans/dependencies/factory-properties-detailed.html)을 참조하자.
 
-> 스프링 설명서에서 "factory bean"은 스프링 컨테이너에 구성되어 인스턴스 또는 정적 팩토리 방법을 통해 객체를 생성하는 빈을 말한다. 대조적으로, `FactoryBean`(대문자와 소문자)는 스프링 별 `FactoryBean` 구현 클래스를 나타낸다.
+> 스프링 설명서에서 "팩토리 빈"은 스프링 컨테이너에 구성되어 인스턴스 또는 정적 팩토리 메서드를 통해 객체를 생성하는 빈을 말한다. 대조적으로, `FactoryBean`(대문자와 소문자)은 스프링 별 `FactoryBean` 구현 클래스를 나타낸다.
+
+<br>
 
 # 빈의 런타임 유형 결정
 

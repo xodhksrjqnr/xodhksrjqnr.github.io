@@ -67,17 +67,17 @@ details summary::marker{
 }
 
 .intent3 {
-    text-indent: 25px;
-    line-height: 20px;
-}
-
-.intent4 {
     text-indent: 30px;
     line-height: 20px;
 }
 
+.intent4 {
+    text-indent: 40px;
+    line-height: 20px;
+}
+
 .intent5 {
-    text-indent: 35px;
+    text-indent: 50px;
     line-height: 20px;
 }
 

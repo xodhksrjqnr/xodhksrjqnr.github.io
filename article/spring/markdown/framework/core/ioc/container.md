@@ -10,6 +10,8 @@
 
 ![](https://docs.spring.io/spring-framework/reference/_images/container-magic.png)
 
+<br>
+
 # 구성 메타데이터
 
 위의 다이어그램에서 볼 수 있듯이 스프링 IoC 컨테이너는 구성 메타데이터의 한 형태를 사용한다. 이 구성 메타데이터는 응용 프로그램 개발자가 스프링 컨테이너에 응용 프로그램의 개체를 인스턴스화, 구성 및 조립하도록 지시하는 방법을 나타낸다.
@@ -53,6 +55,8 @@
 2) 클래스 속성은 빈의 유형을 정의하고 정규화된 클래스 이름을 사용한다.
 
 `id` 특성 값은 상호협력 개체를 참조하는 데 사용할 수 있다. 협업 개체를 참조하기 위한 XML은 이 예에 나와 있지 않다. 자세한 내용은 [의존성](https://docs.spring.io/spring-framework/reference/core/beans/dependencies.html)을 참조하자.
+
+<br>
 
 # 컨테이너 인스턴스화
 
@@ -111,6 +115,8 @@ ApplicationContext context = new ClassPathXmlApplicationContext("services.xml", 
 
 위의 예에서 서비스 계층은 `PetStoreServiceImpl` 클래스와 `JpaAccountDao` 및 `JpaItemDao` 유형의 두 개의 데이터 액세스 개체(JPA 개체-관계 매핑 표준 기반)로 구성된다. `property name` 요소는 JavaBean 속성의 이름을 나타내고 `ref` 요소는 다른 빈 정의의 이름을 나타낸다. `id` 요소와 `ref` 요소 간의 이러한 연결은 상호협력 개체 간의 의존성을 나타낸다. 개체의 의존성 구성에 대한 자세한 내용은 [의존성](https://docs.spring.io/spring-framework/reference/core/beans/dependencies.html)을 참조하자.
 
+<br>
+
 # XML 기반 구성 메타데이터 작성
 
 정의가 여러 XML 파일에 걸쳐 있으면 유용할 수 있다. 각 개별 XML 구성 파일은 종종 아키텍처의 논리 계층 또는 모듈을 나타낸다.
@@ -135,6 +141,8 @@ ApplicationContext context = new ClassPathXmlApplicationContext("services.xml", 
 > 항상 상대 경로 대신 정규화된 리소스 위치(예: `file:C:/config/services.xml` 또는 `classpath:/config/services.xml`)를 사용할 수 있다. 그러나 응용 프로그램의 구성을 특정 절대 위치에 연결하고 있다. 일반적으로 런타임에 JVM 시스템 속성에 대해 확인된 "${…}" 자리 표시자를 통해 이러한 절대 위치에 대해 간접적으로 유지하는 것이 좋다.
 
 네임스페이스 자체는 가져오기 지시 기능을 제공한다. 분명한 빈 정의 이외의 추가 구성 기능은 스프링에서 제공하는 XML 네임스페이스 선택 항목(예: `context` 및 `util` 네임스페이스)에서 사용할 수 있다.
+
+<br>
 
 # The Groovy Bean Definition DSL
 
@@ -161,6 +169,8 @@ beans {
 ```
 
 이 구성 스타일은 XML 빈 정의와 거의 동일하며 스프링의 XML 구성 네임스페이스도 지원한다. 또한 `importBeans` 지시어를 통해 XML 빈 정의 파일을 가져올 수 있다.
+
+<br>
 
 # 컨테이너 사용
 
@@ -203,4 +213,4 @@ context.refresh();
 
 다양한 구성 소스의 빈 정의를 읽으며 동일한 `ApplicationContext`에서 이러한 판독기 대리자를 혼합하고 일치시킬 수 있다.
 
-그런 다음 `getBean`을 사용하여 빈 인스턴스를 검색할 수 있다. `ApplicationContext` 인터페이스에는 빈을 검색하는 몇 가지 다른 방법이 있지만, 이상적으로는 응용 프로그램 코드에서 빈을 사용하지 않는 것이 좋다. 실제로, 당신의 애플리케이션 코드는 `getBean()` 메서드에 대한 호출이 전혀 없어야 하며 따라서 스프링 API에 대한 의존성이 전혀 없어야 한다. 예를 들어, 스프링의 웹 프레임워크 통합은 컨트롤러 및 JSF 관리 빈과 같은 다양한 웹 프레임워크 구성 요소에 대한 의존성 주입을 제공하여 메타데이터(예: 자동 배선 주석)를 통해 특정 빈에 대한 의존성을 선언할 수 있다.
+그런 다음 `getBean`을 사용하여 빈 인스턴스를 검색할 수 있다. `ApplicationContext` 인터페이스에는 빈을 검색하는 몇 가지 다른 방법이 있지만, 이상적으로는 응용 프로그램 코드에서 빈을 사용하지 않는 것이 좋다. 실제로, 당신의 애플리케이션 코드는 `getBean()` 메서드에 대한 호출이 전혀 없어야 하며 따라서 스프링 API에 대한 의존성이 전혀 없어야 한다. 예를 들어, 스프링의 웹 프레임워크 통합은 컨트롤러 및 JSF 관리 빈과 같은 다양한 웹 프레임워크 구성 요소에 대한 의존성 주입을 제공하여 메타데이터(예: autowiring 주석)를 통해 특정 빈에 대한 의존성을 선언할 수 있다.

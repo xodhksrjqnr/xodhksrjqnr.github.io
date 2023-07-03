@@ -7,11 +7,22 @@
         </details>
         <details>
             <summary>Spring Framework(6.0.10)</summary>
-            <p class="intent1" onclick="createPage('spring/markdown/framework/overview/overview', false)">Overview</p>
+            <p class="intent1" onclick="createPage('spring/markdown/framework/overview', false)">Overview</p>
             <details>
                 <summary class="intent1" onclick="createPage('spring/markdown/framework/core/core', false)">Core Technologies</summary>
-                <p class="intent2" onclick="createPage('spring/markdown/framework/core/ioc/introduction', false)">Introduction to the Spring IoC Container and Beans</p>
-                <p class="intent2" onclick="createPage('spring/markdown/framework/core/ioc/container', false)">Container Overview</p>
+                <p class="intent2" onclick="createPage('spring/markdown/framework/core/ioc/introduction', true)">Introduction to the Spring IoC Container and Beans</p>
+                <p class="intent2" onclick="createPage('spring/markdown/framework/core/ioc/container', true)">Container Overview</p>
+                <p class="intent2" onclick="createPage('spring/markdown/framework/core/ioc/bean', true)">Bean Overview</p>
+                <details>
+                    <summary class="intent2" onclick="createPage('spring/markdown/framework/core/ioc/dependencies/dependencies.md', false)">Dependencies</summary>
+                    <p class="intent3" onclick="createPage('spring/markdown/framework/core/ioc/dependencies/injection', false)">Dependency Injection</p>
+                    <p class="intent3" onclick="createPage('spring/markdown/framework/core/ioc/dependencies/detail', false)">Dependencies and Configuration in Detail</p>
+                    <p class="intent3" onclick="createPage('spring/markdown/framework/core/ioc/dependencies/depends-on', false)">Using depends-on</p>
+                    <p class="intent3" onclick="createPage('spring/markdown/framework/core/ioc/dependencies/lazy', false)">Lazy-initialized Beans</p>
+                    <p class="intent3" onclick="createPage('spring/markdown/framework/core/ioc/dependencies/autowiring', false)">Autowiring Collaborators</p>
+                    <p class="intent3" onclick="createPage('spring/markdown/framework/core/ioc/dependencies/method', false)">Method Injection</p>
+                </details>
+                <p class="intent2" onclick="createPage('spring/markdown/framework/core/ioc/scope', false)">Bean Scopes</p>
             </details>
             <p class="intent1" onclick="createPage('spring/markdown/framework/testing', false)">Testing</p>
             <p class="intent1" onclick="createPage('spring/markdown/framework/data-access', false)">Data Access</p>
