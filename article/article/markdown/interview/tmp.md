@@ -35,3 +35,7 @@
 HTTP 프로토콜의 `stateless`와 `connectionless`의 한계를 보완하기 위해 쿠키와 세션을 사용하였다. 즉, `클라이언트와의 정보 유지`를 위함이다. 
 
 전자 서명을 URL 세이프하게 표현한 Json이다. 클레임이라는 속성 정보를 가지며 서버는 전송된 JWT로부터 변조 및 만료 여부를 확인한다.
+
+[JWT](https://velog.io/@znftm97/JWT-Session-Cookie-%EB%B9%84%EA%B5%90-sphsi9yh)
+
+[정리 다시하기]
