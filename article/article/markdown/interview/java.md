@@ -33,7 +33,7 @@
 
 # ORM(Object-Relational Mapping)
 
-객체와 관계형 DB를 매핑
+객체와 관계형 DB의 데이터를 자동으로 매핑해주는 것
 
 ***
 
